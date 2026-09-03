@@ -13,12 +13,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* This site has one intentional light theme (per the brief — no dark-mode design has been
+   scoped yet, see #54 Design System). create-next-app's default prefers-color-scheme: dark
+   media query flipped --foreground to near-white while every component built so far hardcodes
+   a light background, producing near-invisible text contrast for visitors on a dark-mode
+   browser/OS (#64) — deliberately not restored. */
 
 body {
   background: var(--background);

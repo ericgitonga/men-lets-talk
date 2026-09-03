@@ -29,17 +29,18 @@ BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000").rstrip("/")
 
 
 @contextmanager
-def browser_page(viewport=None):
-    # `viewport=None` here means "use Playwright's own default" (1280x720), not
-    # "disable viewport emulation" — omit the kwarg entirely rather than passing
-    # None through, since new_page(viewport=None) has different (window-size)
-    # behaviour than not passing it at all.
+def browser_page(viewport=None, color_scheme=None):
+    # `viewport=None`/`color_scheme=None` here mean "use Playwright's own default", not
+    # "disable emulation" — omit the kwarg entirely rather than passing None through, since
+    # e.g. new_page(viewport=None) has different (window-size) behaviour than not passing it.
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
             kwargs = {"base_url": BASE_URL}
             if viewport is not None:
                 kwargs["viewport"] = viewport
+            if color_scheme is not None:
+                kwargs["color_scheme"] = color_scheme
             page = browser.new_page(**kwargs)
             yield page
         finally:

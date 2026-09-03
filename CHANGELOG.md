@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.10.1] - 2026-09-03
+
+### Fixed
+
+- Illegible nav-bar text (and site-wide text-on-light-background contrast) for visitors on a
+  dark-mode browser/OS — removed `create-next-app`'s default `prefers-color-scheme: dark` auto
+  switch, which flipped text near-white while every component still hardcodes a light
+  background. This project has one intentional light theme; no dark-mode design exists yet.
+  Reported by the client with a screenshot. Added a regression e2e test that checks nav text
+  luminance under emulated dark color-scheme (closes #64)
+
 ## [0.10.0] - 2026-09-03
 
 ### Added
