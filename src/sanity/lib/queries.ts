@@ -199,6 +199,33 @@ export type SanityStory = {
   publishedAt: string;
 };
 
+// Searches across the 3 content types the brief names ("articles, resources, events, and
+// stories" — resources are just articles). $q is passed already wildcarded (see the search
+// page) — parameterized, so wildcard characters a user types can't break out of the match.
+// Stories are filtered to consentGiven == true, same defence-in-depth as STORIES_QUERY.
+export const SEARCH_QUERY = /* groq */ `
+  {
+    "articles": *[_type == "article" && (title match $q || pt::text(body) match $q)]
+      | order(publishedAt desc) [0...20] {
+        _id, title, "slug": slug.current, resourceType
+      },
+    "events": *[_type == "event" && (name match $q || description match $q || location match $q)]
+      | order(date asc) [0...20] {
+        _id, name, "slug": slug.current, location
+      },
+    "stories": *[_type == "story" && consentGiven == true && (name match $q || pt::text(body) match $q)]
+      | order(publishedAt desc) [0...20] {
+        _id, name, "excerpt": pt::text(body)
+      }
+  }
+`;
+
+export type SearchResults = {
+  articles: { _id: string; title: string; slug: string; resourceType: string }[];
+  events: { _id: string; name: string; slug: string; location: string }[];
+  stories: { _id: string; name?: string | null; excerpt?: string | null }[];
+};
+
 // Matches mlt-cms's schemaTypes/shared/topics.ts — duplicated here since this repo doesn't
 // depend on that one; keep the two in sync by hand if the taxonomy changes.
 export const TOPIC_LABELS: Record<string, string> = {

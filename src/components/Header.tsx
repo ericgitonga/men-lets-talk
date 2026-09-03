@@ -54,6 +54,12 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link href="/search" aria-label="Search" data-testid="search-link" className="text-neutral-600 hover:text-neutral-900">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </Link>
           <Link
             href="/get-involved"
             className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
@@ -89,6 +95,9 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link href="/search" className="py-2 text-sm font-medium" onClick={() => setMenuOpen(false)}>
+            Search
+          </Link>
           <Link
             href="/get-involved"
             className="mt-2 rounded-md bg-neutral-900 px-4 py-2 text-center text-sm font-semibold text-white"

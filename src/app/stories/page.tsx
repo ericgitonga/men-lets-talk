@@ -48,7 +48,7 @@ export default async function StoriesPage() {
       ) : (
         <ul data-testid="stories-list" className="mt-8 space-y-10">
           {stories.map((story) => (
-            <li key={story._id} data-testid="story-item" className="border-b border-neutral-200 pb-10">
+            <li id={story._id} key={story._id} data-testid="story-item" className="scroll-mt-24 border-b border-neutral-200 pb-10">
               <p className="mt-1 flex flex-wrap gap-2">
                 {story.topics.map((t) => (
                   <span key={t} className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600">

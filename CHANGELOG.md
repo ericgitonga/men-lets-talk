@@ -6,6 +6,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.16.0] - 2026-09-03
+
+### Added
+
+- Site search: a search icon in the header (desktop + mobile) leads to `/search`, which queries
+  across events, resources/articles, and stories (respecting the story consent filter) via a
+  single GROQ query, grouped results by type, deep-linking to the matching item on its list
+  page via a new `id`/`scroll-mt-24` anchor on each list item (closes #49)
+- Empty-query prompt and no-results states, both distinct from the loading/error states used
+  elsewhere
+
+Verified end-to-end with real temporary content across all 3 types (a distinctively-named
+"Zephyrmoot" event/article/story), confirming the search finds and correctly deep-links to
+each, then deleted before merging. Caught and fixed a GROQ bug along the way — string slicing
+(`text[0...160]`) silently returns null in GROQ (it only applies to arrays); fixed by fetching
+the full text and truncating in JS instead.
+
 ## [0.15.0] - 2026-09-03
 
 ### Added
