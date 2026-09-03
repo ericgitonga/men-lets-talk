@@ -98,6 +98,30 @@ export const RESOURCE_TYPE_LABELS: Record<string, string> = {
   "recommended-resource": "Recommended Resource",
 };
 
+export const COMMUNITY_GROUPS_QUERY = /* groq */ `
+  *[_type == "communityGroup"] | order(name asc) {
+    _id,
+    name,
+    description,
+    audience,
+    image
+  }
+`;
+
+export type SanityCommunityGroup = {
+  _id: string;
+  name: string;
+  description: string;
+  audience: string;
+  image?: { asset?: { _ref: string } } | null;
+};
+
+export const AUDIENCE_LABELS: Record<string, string> = {
+  mentoring: "Older Men Mentoring the Young",
+  families: "Men with Children & Families",
+  campus: "Men in Campus",
+};
+
 export const PARTNERS_QUERY = /* groq */ `
   *[_type == "partner"] | order(name asc) {
     _id,
