@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
+import { VideoEmbed } from "@/components/VideoEmbed";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
@@ -97,13 +98,9 @@ export default async function ResourcesPage({
                   </span>
                 ))}
               </p>
-              {article.videoUrl && (
-                <a href={article.videoUrl} className="mt-3 inline-block underline">
-                  Watch / Listen
-                </a>
-              )}
+              {article.videoUrl && <VideoEmbed url={article.videoUrl} title={article.title} />}
               {article.downloadUrl && (
-                <a href={article.downloadUrl} className="mt-3 inline-block underline">
+                <a href={article.downloadUrl} download className="mt-3 inline-block underline">
                   Download
                 </a>
               )}
