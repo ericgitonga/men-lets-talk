@@ -28,7 +28,29 @@ def test_events_page_loads():
         assert page.get_by_test_id("events-empty-state").is_visible()
 
 
-TESTS = [test_homepage_loads, test_health_endpoint, test_events_page_loads]
+def test_resources_page_loads():
+    # Same rationale as test_events_page_loads: no token in CI, so this only checks the page
+    # loads and shows its empty state — no CMS content hardcoded here.
+    with browser_page() as page:
+        resp = page.goto("/resources")
+        assert resp.status == 200
+        assert page.get_by_test_id("resources-empty-state").is_visible()
+
+
+def test_resources_topic_filter_loads():
+    with browser_page() as page:
+        resp = page.goto("/resources?topic=fatherhood")
+        assert resp.status == 200
+        assert page.get_by_test_id("resources-empty-state").is_visible()
+
+
+TESTS = [
+    test_homepage_loads,
+    test_health_endpoint,
+    test_events_page_loads,
+    test_resources_page_loads,
+    test_resources_topic_filter_loads,
+]
 
 if __name__ == "__main__":
     for t in TESTS:

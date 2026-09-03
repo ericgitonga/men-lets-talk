@@ -39,3 +39,79 @@ export const EVENT_CATEGORY_LABELS: Record<string, string> = {
   "campus-conversations": "Campus Conversations",
   "mentorship-events": "Mentorship Events",
 };
+
+// Base filter shared by both branches below — kept as one string so the two queries can't
+// silently drift apart on what counts as a listable resource.
+const ARTICLE_BASE_FILTER = `_type == "article" && defined(slug.current)`;
+
+export const ARTICLES_QUERY = /* groq */ `
+  *[${ARTICLE_BASE_FILTER}] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    resourceType,
+    topics,
+    featuredImage,
+    videoUrl,
+    "downloadUrl": downloadFile.asset->url,
+    publishedAt
+  }
+`;
+
+// $topic is interpolated into the filter (not passed as a GROQ param) only for the
+// array-membership check below — the value itself is still passed as a bound param, never
+// concatenated as a raw string, so this isn't injectable.
+export const ARTICLES_BY_TOPIC_QUERY = /* groq */ `
+  *[${ARTICLE_BASE_FILTER} && $topic in topics] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    resourceType,
+    topics,
+    featuredImage,
+    videoUrl,
+    "downloadUrl": downloadFile.asset->url,
+    publishedAt
+  }
+`;
+
+export type SanityArticle = {
+  _id: string;
+  title: string;
+  slug: string;
+  resourceType: string;
+  topics: string[];
+  featuredImage?: { asset?: { _ref: string } } | null;
+  videoUrl?: string | null;
+  downloadUrl?: string | null;
+  publishedAt: string;
+};
+
+export const RESOURCE_TYPE_LABELS: Record<string, string> = {
+  article: "Article",
+  video: "Video",
+  podcast: "Podcast",
+  "discussion-guide": "Discussion Guide",
+  devotional: "Devotional",
+  "conversation-starter": "Conversation Starter",
+  book: "Book",
+  "recommended-resource": "Recommended Resource",
+};
+
+// Matches mlt-cms's schemaTypes/shared/topics.ts — duplicated here since this repo doesn't
+// depend on that one; keep the two in sync by hand if the taxonomy changes.
+export const TOPIC_LABELS: Record<string, string> = {
+  pressure: "Pressure",
+  failure: "Failure",
+  marriage: "Marriage",
+  fatherhood: "Fatherhood",
+  money: "Money",
+  purpose: "Purpose",
+  loneliness: "Loneliness",
+  grief: "Grief",
+  relationships: "Relationships",
+  "mental-health": "Mental Health",
+  masculinity: "Masculinity",
+  faith: "Faith",
+  "starting-again": "Starting Again",
+};

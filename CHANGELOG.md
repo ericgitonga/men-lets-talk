@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.3.0] - 2026-09-03
+
+### Added
+
+- `/resources` page, fetching live from Sanity's `article` document type: resource type,
+  topics, featured image, video/download links, sorted newest first. Supports filtering by
+  topic via a `?topic=` query param (server-rendered), per brief section 10. Verified
+  end-to-end with a temporary test article created in the Studio and deleted before merging.
+  Same graceful-degradation behaviour as `/events` when no token is configured (closes #34,
+  part of #27)
+
 ## [0.2.0] - 2026-09-03
 
 ### Added
