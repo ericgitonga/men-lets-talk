@@ -63,20 +63,20 @@ export function RegisterForm({ eventId, eventName }: { eventId: string; eventNam
         type="text"
         placeholder="Name"
         required
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+        className="w-full rounded-md border border-neutral-300 px-3 py-2"
       />
       <input
         name="email"
         type="email"
         placeholder="Email"
         required
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+        className="w-full rounded-md border border-neutral-300 px-3 py-2"
       />
       <input
         name="phone"
         type="tel"
         placeholder="Phone (optional)"
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+        className="w-full rounded-md border border-neutral-300 px-3 py-2"
       />
       {error && (
         <p data-testid="register-error" className="text-sm text-red-600">

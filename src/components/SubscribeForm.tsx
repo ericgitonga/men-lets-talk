@@ -53,7 +53,7 @@ export function SubscribeForm() {
         type="email"
         placeholder="Your email"
         required
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
+        className="w-full rounded-md border border-neutral-300 px-3 py-2"
       />
       <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-neutral-600">
         {INTERESTS.map((interest) => (
