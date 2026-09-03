@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.6.0] - 2026-09-03
+
+### Added
+
+- `/community` page, fetching live from Sanity's `communityGroup` document type (name,
+  description, audience, image), per brief section 8 "Find Your Space." Verified end-to-end
+  with a temporary test group created in the Studio and deleted before merging (closes #39,
+  part of #41 and #27)
+
 ## [0.5.0] - 2026-09-03
 
 ### Added
