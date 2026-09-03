@@ -58,10 +58,18 @@ def test_mobile_nav_closes_on_outside_click():
 
 
 def test_placeholder_nav_pages_load():
-    for path in ("/about", "/talk", "/get-involved"):
+    for path in ("/talk", "/get-involved"):
         with browser_page() as page:
             resp = page.goto(path)
             assert resp.status == 200
+
+
+def test_about_page_loads():
+    with browser_page() as page:
+        resp = page.goto("/about")
+        assert resp.status == 200
+        assert page.get_by_test_id("our-story-section").is_visible()
+        assert page.get_by_test_id("our-values-section").is_visible()
 
 
 def test_health_endpoint():
@@ -137,6 +145,7 @@ TESTS = [
     test_mobile_nav_closes_on_escape,
     test_mobile_nav_closes_on_outside_click,
     test_placeholder_nav_pages_load,
+    test_about_page_loads,
     test_health_endpoint,
     test_events_page_loads,
     test_resources_page_loads,
