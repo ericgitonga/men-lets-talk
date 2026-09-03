@@ -1,5 +1,7 @@
 """Golden-path smoke checks. Extend with real specs as pages/flows are built."""
 
+import re
+
 from _common import BASE_URL, browser_page
 
 MOBILE_VIEWPORT = {"width": 390, "height": 844}
@@ -71,6 +73,24 @@ def test_talk_page_loads_and_links_to_filtered_resources():
         assert page.get_by_test_id("talk-categories").is_visible()
         page.get_by_role("link", name="See Fatherhood resources →", exact=True).click()
         page.wait_for_url("**/resources?topic=fatherhood")
+
+
+def test_nav_text_legible_in_dark_mode_browser():
+    # Regression test for #64: create-next-app's default prefers-color-scheme: dark media
+    # query flipped body text near-white while the header keeps a hardcoded white background,
+    # making the nav illegible for any visitor whose OS/browser prefers dark mode. Assert the
+    # nav link's computed text color is dark (low luminance), not just non-white, so it stays
+    # legible against the header's light background regardless of the visitor's OS preference.
+    with browser_page(color_scheme="dark") as page:
+        page.goto("/")
+        color = page.get_by_test_id("desktop-nav").get_by_role("link", name="Home", exact=True).evaluate(
+            "el => getComputedStyle(el).color"
+        )
+        m = re.match(r"rgba?\((\d+), (\d+), (\d+)", color)
+        assert m, f"unexpected color format: {color}"
+        r, g, b = (int(x) for x in m.groups())
+        luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+        assert luminance < 0.5, f"nav text too light for a white background: {color}"
 
 
 def test_breadcrumb_links_back_home():
@@ -166,6 +186,7 @@ TESTS = [
     test_placeholder_nav_pages_load,
     test_about_page_loads,
     test_talk_page_loads_and_links_to_filtered_resources,
+    test_nav_text_legible_in_dark_mode_browser,
     test_breadcrumb_links_back_home,
     test_health_endpoint,
     test_events_page_loads,
