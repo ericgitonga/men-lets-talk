@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.4.0] - 2026-09-03
+
+### Added
+
+- `/stories` page, fetching live from Sanity's `story` document type via `next-sanity`'s
+  `PortableText`. Only stories with `consentGiven: true` are ever queried — filtered in the
+  GROQ query itself as defence in depth alongside the schema's publish-time validation.
+  Verified end-to-end with a temporary consented test story (rendered) and a temporary
+  non-consented one (correctly excluded), both deleted before merging (closes #37, part of #41
+  and #27)
+- `@tailwindcss/typography`, for readable Portable Text rendering (`prose` classes)
+
+### Fixed
+
+- Pinned `js-yaml`/`smol-toml`/`uuid` via npm `overrides` — vulnerabilities transitive through
+  `next-sanity`'s own Sanity CLI tooling dependency, same issue documented on the
+  `ndingi`/`ndingi-foundation` precedent
+
 ## [0.3.0] - 2026-09-03
 
 ### Added
