@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import { PortableText } from "next-sanity";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
@@ -33,6 +34,10 @@ export default async function StoriesPage() {
 
   return (
     <main data-testid="stories-page" className="mx-auto max-w-3xl px-6 py-16">
+      <Breadcrumb
+        data-testid="breadcrumb"
+        items={[{ label: "Home", href: "/" }, { label: "Stories" }]}
+      />
       <h1 className="text-3xl font-bold">Real Men. Real Stories.</h1>
 
       {stories.length === 0 ? (

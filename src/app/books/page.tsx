@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
@@ -30,6 +31,10 @@ export default async function BooksPage() {
 
   return (
     <main data-testid="books-page" className="mx-auto max-w-3xl px-6 py-16">
+      <Breadcrumb
+        data-testid="breadcrumb"
+        items={[{ label: "Home", href: "/" }, { label: "Books & Projects" }]}
+      />
       <h1 className="text-3xl font-bold">Books &amp; Projects</h1>
 
       {books.length === 0 ? (
