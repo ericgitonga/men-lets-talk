@@ -54,6 +54,7 @@ export default async function PartnersPage() {
           <li>Community initiatives</li>
           <li>Mental-health initiatives</li>
           <li>Media partnerships</li>
+          <li>Church partnerships</li>
         </ul>
         <Link
           href="/contact"
