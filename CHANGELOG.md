@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.13.0] - 2026-09-03
+
+### Added
+
+- Email database: a "Stay Connected" subscribe form on the homepage (email + interest
+  checkboxes for events/resources/conversations/newsletters), POSTing to a new
+  `/api/subscribe` route that writes a `subscriber` document to Sanity (mlt-cms v0.4.0) via the
+  existing write-scoped token — reuses the infrastructure built for event registration (#46).
+  Verified end-to-end with real temporary subscriptions (browser flow + raw API), confirmed in
+  Sanity, then deleted before merging (closes #47)
+
 ## [0.12.0] - 2026-09-03
 
 ### Added
