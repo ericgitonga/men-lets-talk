@@ -59,11 +59,33 @@ def test_mobile_nav_closes_on_outside_click():
         assert page.get_by_test_id("mobile-nav").is_visible() is False
 
 
-def test_placeholder_nav_pages_load():
-    for path in ("/get-involved",):
-        with browser_page() as page:
-            resp = page.goto(path)
-            assert resp.status == 200
+def test_get_involved_page_loads():
+    with browser_page() as page:
+        resp = page.goto("/get-involved")
+        assert resp.status == 200
+        assert page.get_by_test_id("get-involved-options").is_visible()
+
+
+def test_contact_form_submit_shows_pending_message():
+    # No email-delivery backend yet (issue #66) — verify the "coming soon" UX path, not a
+    # real send, since there's nothing to send to.
+    with browser_page() as page:
+        page.goto("/contact")
+        page.get_by_label("Name").fill("Test User")
+        page.get_by_label("Email").fill("test@example.com")
+        page.get_by_label("Message").fill("This is a test message.")
+        page.get_by_role("button", name="Send", exact=True).click()
+        assert page.get_by_test_id("contact-form-submitted").is_visible()
+
+
+def test_partners_page_has_become_a_partner_cta():
+    with browser_page() as page:
+        page.goto("/partners")
+        cta = page.get_by_test_id("why-partner-section").get_by_role(
+            "link", name="Become a Partner", exact=True
+        )
+        cta.click()
+        page.wait_for_url("**/contact")
 
 
 def test_talk_page_loads_and_links_to_filtered_resources():
@@ -183,7 +205,9 @@ TESTS = [
     test_mobile_nav_hidden_behind_hamburger_toggle,
     test_mobile_nav_closes_on_escape,
     test_mobile_nav_closes_on_outside_click,
-    test_placeholder_nav_pages_load,
+    test_get_involved_page_loads,
+    test_contact_form_submit_shows_pending_message,
+    test_partners_page_has_become_a_partner_cta,
     test_about_page_loads,
     test_talk_page_loads_and_links_to_filtered_resources,
     test_nav_text_legible_in_dark_mode_browser,
