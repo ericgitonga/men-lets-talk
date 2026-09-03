@@ -73,7 +73,7 @@ export function Header() {
           type="button"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           data-testid="mobile-menu-toggle"
-          className="flex flex-col gap-1.5 p-2 md:hidden"
+          className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 md:hidden"
           onClick={() => setMenuOpen((open) => !open)}
         >
           <span className="h-0.5 w-6 bg-neutral-900" />
@@ -89,18 +89,18 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="py-2 text-sm font-medium"
+              className="py-3 text-sm font-medium"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
             </Link>
           ))}
-          <Link href="/search" className="py-2 text-sm font-medium" onClick={() => setMenuOpen(false)}>
+          <Link href="/search" className="py-3 text-sm font-medium" onClick={() => setMenuOpen(false)}>
             Search
           </Link>
           <Link
             href="/get-involved"
-            className="mt-2 rounded-md bg-neutral-900 px-4 py-2 text-center text-sm font-semibold text-white"
+            className="mt-2 rounded-md bg-neutral-900 px-4 py-3 text-center text-sm font-semibold text-white"
             onClick={() => setMenuOpen(false)}
           >
             Join the Conversation

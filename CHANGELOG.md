@@ -6,6 +6,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.16.1] - 2026-09-03
+
+### Fixed
+
+- Mobile-first responsiveness audit (#50): full-viewport audit across 3 mobile widths (360-390px)
+  and 12 pages found no horizontal overflow, but two real classes of bugs:
+  - The subscribe form's email input and all three register-form inputs had an explicit
+    `text-sm` (14px) font-size. iOS Safari auto-zooms the viewport on focus of any input with a
+    computed font-size under 16px — jarring UX on forms most visitors fill out on a phone. Fixed
+    by dropping the explicit size so they inherit the 16px body font.
+  - The mobile hamburger toggle (40x34px) and every mobile nav row (36px tall) were below the
+    ~44px minimum comfortable tap target (Apple HIG / Material). Toggle is now a fixed 44x44px
+    button; nav rows/CTA use `py-3` instead of `py-2`.
+
+  Added 2 regression e2e tests (`test_mobile_tap_targets_meet_minimum_size`,
+  `test_mobile_form_inputs_avoid_ios_safari_zoom`) so these can't silently reappear.
+
 ## [0.16.0] - 2026-09-03
 
 ### Added

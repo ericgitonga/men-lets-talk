@@ -189,6 +189,35 @@ def test_nav_text_legible_in_dark_mode_browser():
         assert luminance < 0.5, f"nav text too light for a white background: {color}"
 
 
+def test_mobile_tap_targets_meet_minimum_size():
+    # Regression test for #50: the hamburger toggle (40x34) and mobile nav rows (36px tall)
+    # were both below the ~44px minimum comfortable tap target (Apple HIG / Material). Assert
+    # a floor rather than an exact size so future spacing tweaks don't need to touch this test.
+    MIN_TAP_TARGET = 44
+    with browser_page(viewport=MOBILE_VIEWPORT) as page:
+        page.goto("/")
+        toggle_box = page.get_by_test_id("mobile-menu-toggle").bounding_box()
+        assert toggle_box["width"] >= MIN_TAP_TARGET
+        assert toggle_box["height"] >= MIN_TAP_TARGET
+
+        page.get_by_test_id("mobile-menu-toggle").click()
+        for link in page.get_by_test_id("mobile-nav").get_by_role("link").all():
+            box = link.bounding_box()
+            assert box["height"] >= MIN_TAP_TARGET, f"{link.text_content()!r} row is only {box['height']}px tall"
+
+
+def test_mobile_form_inputs_avoid_ios_safari_zoom():
+    # Regression test for #50: the subscribe form's email input had an explicit text-sm
+    # (14px) font-size. iOS Safari auto-zooms the viewport on focus of any input with a
+    # computed font-size under 16px, which is jarring, unexpected UX on a form most visitors
+    # will fill out on a phone. Assert every text-entry input on the homepage is >= 16px.
+    with browser_page(viewport=MOBILE_VIEWPORT) as page:
+        page.goto("/")
+        for input_el in page.locator("input[type=email], input[type=text], input[type=tel]").all():
+            font_size = float(input_el.evaluate("el => getComputedStyle(el).fontSize").replace("px", ""))
+            assert font_size >= 16, f"input font-size {font_size}px will trigger iOS Safari auto-zoom"
+
+
 def test_breadcrumb_links_back_home():
     with browser_page() as page:
         page.goto("/about")
@@ -294,6 +323,8 @@ TESTS = [
     test_about_page_loads,
     test_talk_page_loads_and_links_to_filtered_resources,
     test_nav_text_legible_in_dark_mode_browser,
+    test_mobile_tap_targets_meet_minimum_size,
+    test_mobile_form_inputs_avoid_ios_safari_zoom,
     test_breadcrumb_links_back_home,
     test_health_endpoint,
     test_events_page_loads,
