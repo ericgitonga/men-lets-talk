@@ -6,6 +6,19 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.12.0] - 2026-09-03
+
+### Added
+
+- Event registration: the "Register" CTA on `/events` now opens a real form (name, email,
+  phone) that POSTs to a new `/api/register` route, which writes a `registration` document to
+  Sanity (mlt-cms v0.3.0) via a write-scoped, server-only token — the MLT team can see/manage
+  sign-ups directly in the Studio. Verified end-to-end with a real temporary event and
+  registration (both created via the actual browser flow and the raw API, confirmed in Sanity,
+  then deleted before merging) (closes #46)
+- `SANITY_API_WRITE_TOKEN` (editor-scoped, server-only) added to Vercel
+  Production/Preview/Development and `.env.local`, alongside the existing read token
+
 ## [0.11.0] - 2026-09-03
 
 ### Added

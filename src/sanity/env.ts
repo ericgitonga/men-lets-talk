@@ -12,3 +12,7 @@ export const apiVersion = "2026-01-01";
 // callers must treat a missing token as "Sanity isn't configured" and degrade gracefully
 // (e.g. render an empty state) rather than crash the build.
 export const readToken = process.env.SANITY_API_READ_TOKEN;
+
+// Editor-scoped — only used server-side (API routes), never imported into a client component.
+// Same "missing means not configured" contract as readToken: CI has neither.
+export const writeToken = process.env.SANITY_API_WRITE_TOKEN;

@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
+import { RegisterForm } from "@/components/RegisterForm";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
@@ -72,13 +73,7 @@ export default async function EventsPage() {
                 &middot; {event.location}
               </p>
               <p className="mt-3">{event.description}</p>
-              {event.registrationOpen && (
-                // No registration flow exists yet (issue #17) — shown as a preview of the
-                // CTA placement, not yet a working link.
-                <span className="mt-4 inline-block rounded-md bg-neutral-900 px-5 py-2 text-white opacity-60">
-                  Register (coming soon)
-                </span>
-              )}
+              {event.registrationOpen && <RegisterForm eventId={event._id} eventName={event.name} />}
             </li>
           ))}
         </ul>
