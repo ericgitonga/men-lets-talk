@@ -98,6 +98,31 @@ export const RESOURCE_TYPE_LABELS: Record<string, string> = {
   "recommended-resource": "Recommended Resource",
 };
 
+// consentGiven == true is filtered here in the query itself — defence in depth alongside the
+// schema's publish-time validation (mlt-cms's story.ts), so a bug or manual API write that
+// slips past that validation still can't surface an unconsented story on the site.
+export const STORIES_QUERY = /* groq */ `
+  *[_type == "story" && consentGiven == true] | order(publishedAt desc) {
+    _id,
+    name,
+    ageOrCategory,
+    topics,
+    body,
+    videoUrl,
+    publishedAt
+  }
+`;
+
+export type SanityStory = {
+  _id: string;
+  name?: string | null;
+  ageOrCategory?: string | null;
+  topics: string[];
+  body?: unknown[] | null;
+  videoUrl?: string | null;
+  publishedAt: string;
+};
+
 // Matches mlt-cms's schemaTypes/shared/topics.ts — duplicated here since this repo doesn't
 // depend on that one; keep the two in sync by hand if the taxonomy changes.
 export const TOPIC_LABELS: Record<string, string> = {

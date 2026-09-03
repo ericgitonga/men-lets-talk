@@ -44,12 +44,22 @@ def test_resources_topic_filter_loads():
         assert page.get_by_test_id("resources-empty-state").is_visible()
 
 
+def test_stories_page_loads():
+    # Same rationale as the other Sanity-backed pages: no token in CI, so this only checks the
+    # page loads and shows its empty state — no CMS content hardcoded here.
+    with browser_page() as page:
+        resp = page.goto("/stories")
+        assert resp.status == 200
+        assert page.get_by_test_id("stories-empty-state").is_visible()
+
+
 TESTS = [
     test_homepage_loads,
     test_health_endpoint,
     test_events_page_loads,
     test_resources_page_loads,
     test_resources_topic_filter_loads,
+    test_stories_page_loads,
 ]
 
 if __name__ == "__main__":
