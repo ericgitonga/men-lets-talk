@@ -6,6 +6,26 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.11.0] - 2026-09-03
+
+### Added
+
+- `/get-involved` page: Attend, Volunteer, Mentor, Partner, Sponsor, Support — each with its
+  own CTA linking to Events, Contact, or Partners, replacing the placeholder stub (closes #13,
+  part of #45)
+- `/contact` page: full form UI (Name, Email, Phone, Topic, Message) plus the client's real
+  WhatsApp number and Instagram handle (confirmed from their event flyers). Submission shows a
+  "coming soon" message — no email-delivery backend is wired up yet (tracked separately as
+  #66); no email address or physical location is shown, since the client hasn't supplied one
+  and neither was fabricated (closes #16, part of #45)
+- Partners page: added a "Why partner with us?" pitch section (partnership opportunities +
+  "Become a Partner" CTA linking to Contact) above the existing partner listing, which is now
+  headed "Our Current Partners" (closes #14, part of #45)
+
+### Removed
+
+- `PlaceholderPage.tsx` — no longer used, now that every nav destination has real content
+
 ## [0.10.1] - 2026-09-03
 
 ### Fixed

@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
+import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
@@ -40,6 +41,31 @@ export default async function PartnersPage() {
         items={[{ label: "Home", href: "/" }, { label: "Partners & Sponsors" }]}
       />
       <h1 className="text-3xl font-bold">Partners &amp; Sponsors</h1>
+
+      <section data-testid="why-partner-section" className="mt-8">
+        <h2 className="text-xl font-bold">Why partner with us?</h2>
+        <p className="mt-3 text-neutral-700">
+          Create a professional partnership with Men Let&apos;s Talk to help reach more men
+          with honest conversations, community and practical support.
+        </p>
+        <ul className="mt-4 grid grid-cols-1 gap-2 text-sm text-neutral-600 sm:grid-cols-2">
+          <li>Corporate men&apos;s wellness</li>
+          <li>Event sponsorship</li>
+          <li>Community initiatives</li>
+          <li>Mental-health initiatives</li>
+          <li>Media partnerships</li>
+        </ul>
+        <Link
+          href="/contact"
+          className="mt-6 inline-block rounded-md bg-neutral-900 px-6 py-3 font-semibold text-white"
+        >
+          Become a Partner
+        </Link>
+      </section>
+
+      <h2 data-testid="current-partners-heading" className="mt-16 text-xl font-bold">
+        Our Current Partners
+      </h2>
 
       {partners.length === 0 ? (
         <p data-testid="partners-empty-state" className="mt-8 text-neutral-600">
