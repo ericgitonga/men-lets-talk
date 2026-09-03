@@ -172,6 +172,7 @@ export const PARTNERSHIP_TYPE_LABELS: Record<string, string> = {
   "community-initiatives": "Community Initiatives",
   "mental-health-initiatives": "Mental-Health Initiatives",
   "media-partnerships": "Media Partnerships",
+  "church-partnerships": "Church Partnerships",
 };
 
 // consentGiven == true is filtered here in the query itself — defence in depth alongside the

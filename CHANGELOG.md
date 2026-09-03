@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.17.1] - 2026-09-03
+
+### Added
+
+- "Church partnerships" as a named path on the /partners page's "why partner" pitch, and its
+  label mapping for the matching Sanity `partnershipType` (mlt-cms v0.5.0). Churches are a named
+  secondary target audience in the brief (#3) but had no matching partnership category (#76)
+
 ## [0.17.0] - 2026-09-03
 
 ### Added
