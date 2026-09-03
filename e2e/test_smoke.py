@@ -2,11 +2,66 @@
 
 from _common import BASE_URL, browser_page
 
+MOBILE_VIEWPORT = {"width": 390, "height": 844}
+
 
 def test_homepage_loads():
     with browser_page() as page:
         resp = page.goto("/")
         assert resp.status == 200
+        assert page.get_by_test_id("hero-section").is_visible()
+        assert page.get_by_test_id("what-is-mlt-section").is_visible()
+        assert page.get_by_test_id("carrying-section").is_visible()
+
+
+def test_carrying_topic_links_to_filtered_resources():
+    with browser_page() as page:
+        page.goto("/")
+        page.get_by_test_id("carrying-section").get_by_role("link", name="Fatherhood", exact=True).click()
+        page.wait_for_url("**/resources?topic=fatherhood")
+
+
+def test_desktop_nav_visible_no_hamburger():
+    with browser_page() as page:
+        page.goto("/")
+        assert page.get_by_test_id("desktop-nav").is_visible()
+        assert page.get_by_test_id("mobile-menu-toggle").is_visible() is False
+
+
+def test_mobile_nav_hidden_behind_hamburger_toggle():
+    with browser_page(viewport=MOBILE_VIEWPORT) as page:
+        page.goto("/")
+        assert page.get_by_test_id("mobile-menu-toggle").is_visible()
+        assert page.get_by_test_id("mobile-nav").is_visible() is False
+        page.get_by_test_id("mobile-menu-toggle").click()
+        assert page.get_by_test_id("mobile-nav").is_visible()
+        page.get_by_test_id("mobile-nav").get_by_role("link", name="Events", exact=True).click()
+        page.wait_for_url("**/events")
+
+
+def test_mobile_nav_closes_on_escape():
+    with browser_page(viewport=MOBILE_VIEWPORT) as page:
+        page.goto("/")
+        page.get_by_test_id("mobile-menu-toggle").click()
+        assert page.get_by_test_id("mobile-nav").is_visible()
+        page.keyboard.press("Escape")
+        assert page.get_by_test_id("mobile-nav").is_visible() is False
+
+
+def test_mobile_nav_closes_on_outside_click():
+    with browser_page(viewport=MOBILE_VIEWPORT) as page:
+        page.goto("/")
+        page.get_by_test_id("mobile-menu-toggle").click()
+        assert page.get_by_test_id("mobile-nav").is_visible()
+        page.get_by_test_id("hero-section").click(position={"x": 10, "y": 10})
+        assert page.get_by_test_id("mobile-nav").is_visible() is False
+
+
+def test_placeholder_nav_pages_load():
+    for path in ("/about", "/talk", "/get-involved"):
+        with browser_page() as page:
+            resp = page.goto(path)
+            assert resp.status == 200
 
 
 def test_health_endpoint():
@@ -76,6 +131,12 @@ def test_books_page_loads():
 
 TESTS = [
     test_homepage_loads,
+    test_carrying_topic_links_to_filtered_resources,
+    test_desktop_nav_visible_no_hamburger,
+    test_mobile_nav_hidden_behind_hamburger_toggle,
+    test_mobile_nav_closes_on_escape,
+    test_mobile_nav_closes_on_outside_click,
+    test_placeholder_nav_pages_load,
     test_health_endpoint,
     test_events_page_loads,
     test_resources_page_loads,

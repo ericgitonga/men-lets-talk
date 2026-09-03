@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.8.0] - 2026-09-03
+
+### Added
+
+- Site navigation (`Header.tsx`): sticky desktop bar, mobile hamburger menu (closes on
+  Escape or outside click), all 8 brief nav links plus a "Join the Conversation" CTA (closes
+  #4, part of #43)
+- Homepage: hero (real event photo, headline, subheading, dual CTAs), "What is Men Let's Talk"
+  section with the four Talk/Connect/Grow/Lead pillars, a signature-statement visual break
+  (part of #22 — an ongoing, ambient requirement as more pages ship, not closed by this alone),
+  and the "What Are You Carrying?" topic-card grid linking into `/resources?topic=X` (closes
+  #5 and #6, part of #43)
+- Placeholder pages for `/about`, `/talk`, and `/get-involved` — the three nav destinations
+  without real content yet, so no nav link 404s (mirrors the `ndingi` precedent)
+
 ## [0.7.0] - 2026-09-03
 
 ### Added
