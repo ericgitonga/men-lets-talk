@@ -66,6 +66,26 @@ def test_get_involved_page_loads():
         assert page.get_by_test_id("get-involved-options").is_visible()
 
 
+def test_register_api_rejects_invalid_body():
+    with browser_page() as page:
+        resp = page.request.post(f"{BASE_URL}/api/register", data={"eventId": "x"})
+        assert resp.status == 400
+
+
+def test_register_api_returns_503_when_not_configured():
+    # No SANITY_API_WRITE_TOKEN in CI (zero cloud credentials — see ONBOARDING.md), so this
+    # verifies the route degrades gracefully instead of crashing or silently writing nothing.
+    # The full write path (a real registration landing in Sanity) is verified manually before
+    # merging, same as the other Sanity-backed features — not something CI can exercise
+    # without live write credentials.
+    with browser_page() as page:
+        resp = page.request.post(
+            f"{BASE_URL}/api/register",
+            data={"eventId": "x", "name": "Test", "email": "test@example.com"},
+        )
+        assert resp.status == 503
+
+
 def test_contact_form_submit_shows_pending_message():
     # No email-delivery backend yet (issue #66) — verify the "coming soon" UX path, not a
     # real send, since there's nothing to send to.
@@ -206,6 +226,8 @@ TESTS = [
     test_mobile_nav_closes_on_escape,
     test_mobile_nav_closes_on_outside_click,
     test_get_involved_page_loads,
+    test_register_api_rejects_invalid_body,
+    test_register_api_returns_503_when_not_configured,
     test_contact_form_submit_shows_pending_message,
     test_partners_page_has_become_a_partner_cta,
     test_about_page_loads,
