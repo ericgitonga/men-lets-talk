@@ -2,6 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import heroImage from "@/assets/hero-men-talking.jpg";
 import { SubscribeForm } from "@/components/SubscribeForm";
+import { client } from "@/sanity/lib/client";
+import { readToken } from "@/sanity/env";
+import { HOME_STORIES_PREVIEW_QUERY, type SanityStoryPreview } from "@/sanity/lib/queries";
+import { truncate } from "@/lib/text";
+
+export const revalidate = 60;
 
 const PILLARS = [
   { name: "Talk", description: "Create safe spaces for honest conversations." },
@@ -25,7 +31,23 @@ const CARRYING_TOPICS = [
   { label: "Starting Again", value: "starting-again" },
 ];
 
-export default function Home() {
+async function getStoryPreviews(): Promise<SanityStoryPreview[]> {
+  // No token configured (e.g. CI, which runs with zero cloud credentials — see
+  // ONBOARDING.md) — treat as "no stories" rather than attempting an unauthenticated
+  // request against the private dataset.
+  if (!readToken) return [];
+
+  try {
+    return await client.fetch(HOME_STORIES_PREVIEW_QUERY);
+  } catch (error) {
+    console.error("Failed to fetch story previews from Sanity:", error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const storyPreviews = await getStoryPreviews();
+
   return (
     <main data-testid="homepage">
       {/* Hero */}
@@ -113,6 +135,36 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Real stories teaser (#23 THE FEELING WE WANT TO CREATE — "there are other men like
+          me"). Hidden entirely rather than showing an empty state — a homepage teaser with
+          nothing to preview should just not appear, unlike a dedicated /stories page. */}
+      {storyPreviews.length > 0 && (
+        <section data-testid="stories-preview-section" className="mx-auto max-w-4xl px-6 py-20">
+          <h2 className="text-center text-3xl font-bold">Real Men. Real Stories.</h2>
+          <p className="mx-auto mt-4 max-w-xl text-center text-neutral-600">
+            You&apos;re not the only one carrying this. Here&apos;s what other men have shared.
+          </p>
+          <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2">
+            {storyPreviews.map((story) => (
+              <div key={story._id} className="rounded-lg border border-neutral-200 p-6">
+                <p className="text-sm font-medium text-neutral-500">
+                  {story.name || "Anonymous"}
+                  {story.ageOrCategory ? `, ${story.ageOrCategory}` : ""}
+                </p>
+                {story.excerpt && (
+                  <p className="mt-3 text-neutral-700">{truncate(story.excerpt, 160)}</p>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link href="/stories" className="font-semibold underline">
+              Read more stories →
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Stay Connected — email database (brief section 17) */}
       <section data-testid="stay-connected-section" className="bg-neutral-100 px-6 py-16">
