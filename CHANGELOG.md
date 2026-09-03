@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.17.0] - 2026-09-03
+
+### Added
+
+- Brief's exact supporting message — "Talk. Listen. Heal. Grow. Lead." — now rendered verbatim
+  in the homepage hero, between the core-message headline and the existing subheading (#1). It
+  was never actually on the site despite being specified in the brief; added a regression e2e
+  test asserting the literal text so it can't quietly drop again.
+
 ## [0.16.1] - 2026-09-03
 
 ### Fixed

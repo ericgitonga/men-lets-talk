@@ -41,6 +41,12 @@ export default function Home() {
         <div className="absolute inset-0 bg-neutral-900/70" />
         <div className="relative">
           <h1 className="mx-auto max-w-3xl text-4xl font-bold sm:text-5xl">No man should walk alone.</h1>
+          <p
+            data-testid="supporting-message"
+            className="mx-auto mt-4 text-sm font-semibold tracking-widest text-neutral-300 uppercase"
+          >
+            Talk. Listen. Heal. Grow. Lead.
+          </p>
           <p className="mx-auto mt-6 max-w-xl text-lg text-neutral-200">
             Men Let&apos;s Talk creates safe spaces where men can be honest, heard, supported and
             equipped to navigate life together.
