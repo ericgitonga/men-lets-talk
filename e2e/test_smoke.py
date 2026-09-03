@@ -27,6 +27,26 @@ def test_hero_carries_brief_supporting_message():
         assert page.get_by_test_id("supporting-message").text_content() == "Talk. Listen. Heal. Grow. Lead."
 
 
+def test_homepage_find_your_space_section_always_renders():
+    # #8 OUR COMMUNITY: unlike the events/stories previews, these 4 feature categories are
+    # static brief content, not CMS-driven — assert the section and all 4 headline names
+    # render regardless of whether any real community groups exist in Sanity, and that the CTA
+    # links through to /community.
+    with browser_page() as page:
+        page.goto("/")
+        section = page.get_by_test_id("find-your-space-section")
+        assert section.is_visible()
+        for name in [
+            "No Man Walks Alone",
+            "Older Men Mentoring the Young",
+            "Men with Children & Families",
+            "Men in Campus",
+        ]:
+            assert section.get_by_role("heading", name=name, exact=True).is_visible()
+        section.get_by_role("link", name="Find Your Community →", exact=True).click()
+        page.wait_for_url("**/community")
+
+
 def test_homepage_hides_events_section_when_no_events():
     # No token in CI (zero cloud credentials — see ONBOARDING.md), so the homepage upcoming-
     # events teaser (#7 UPCOMING EVENTS) always has nothing to show here. Assert it degrades by
@@ -338,6 +358,7 @@ def test_books_page_loads():
 TESTS = [
     test_homepage_loads,
     test_hero_carries_brief_supporting_message,
+    test_homepage_find_your_space_section_always_renders,
     test_homepage_hides_events_section_when_no_events,
     test_homepage_hides_stories_preview_when_no_stories,
     test_carrying_topic_links_to_filtered_resources,
