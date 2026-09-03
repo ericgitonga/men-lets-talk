@@ -2,15 +2,12 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { RESOURCE_TYPE_LABELS, SEARCH_QUERY, type SearchResults } from "@/sanity/lib/queries";
+import { truncate } from "@/lib/text";
 
 export const metadata = {
   title: "Search | Men Let's Talk",
   description: "Search articles, resources, events, and stories.",
 };
-
-function truncate(text: string, maxLength: number): string {
-  return text.length > maxLength ? `${text.slice(0, maxLength).trimEnd()}…` : text;
-}
 
 async function search(term: string): Promise<SearchResults> {
   const empty: SearchResults = { articles: [], events: [], stories: [] };

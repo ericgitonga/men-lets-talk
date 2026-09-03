@@ -6,6 +6,27 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.18.0] - 2026-09-04
+
+### Added
+
+- Homepage "Real Men. Real Stories." teaser (#23 THE FEELING WE WANT TO CREATE): audited the
+  brief's 5-step emotional journey (Recognition → Safety → Connection → Action → Belonging)
+  against the live site. Recognition ("What Are You Carrying?"), Safety (hero copy), and Action
+  (event CTAs) were all served, but Connection — "there are other men like me" — had no presence
+  on the homepage despite `/stories` existing and being wired. Added a 2-story preview, sourced
+  from Sanity (`HOME_STORIES_PREVIEW_QUERY`), between the carrying-topics grid and the email
+  signup, hidden entirely rather than showing an empty state when there's nothing to preview
+  (production has no real stories published yet). Homepage now revalidates every 60s like the
+  other Sanity-backed pages (was previously fully static, with no revalidate window at all).
+- `src/lib/text.ts`: extracted the `truncate` helper (previously private to the search page) so
+  the homepage preview can reuse it; added unit tests for it.
+
+Verified end-to-end against production Sanity with 2 real temporary "Zephyrmoot" test stories
+(consent given), confirming the preview renders correctly and links through to `/stories`, then
+deleted — also cleaned up one leftover "Zephyrmoot" story from the #49 search-feature testing
+that hadn't been deleted at the time.
+
 ## [0.17.1] - 2026-09-03
 
 ### Added

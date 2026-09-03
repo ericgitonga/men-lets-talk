@@ -27,6 +27,18 @@ def test_hero_carries_brief_supporting_message():
         assert page.get_by_test_id("supporting-message").text_content() == "Talk. Listen. Heal. Grow. Lead."
 
 
+def test_homepage_hides_stories_preview_when_no_stories():
+    # No token in CI (zero cloud credentials — see ONBOARDING.md), so the homepage stories
+    # preview (#23, added for the "CONNECTION" emotional-journey step) always has nothing to
+    # show here. Assert it degrades by not rendering at all, rather than showing an awkward
+    # empty state on a marketing homepage. The real path (a real consented story rendering as
+    # a preview card, linking through to /stories) is verified manually before merging, same
+    # as the other Sanity-backed features.
+    with browser_page() as page:
+        page.goto("/")
+        assert page.get_by_test_id("stories-preview-section").count() == 0
+
+
 def test_carrying_topic_links_to_filtered_resources():
     with browser_page() as page:
         page.goto("/")
@@ -315,6 +327,7 @@ def test_books_page_loads():
 TESTS = [
     test_homepage_loads,
     test_hero_carries_brief_supporting_message,
+    test_homepage_hides_stories_preview_when_no_stories,
     test_carrying_topic_links_to_filtered_resources,
     test_desktop_nav_visible_no_hamburger,
     test_mobile_nav_hidden_behind_hamburger_toggle,

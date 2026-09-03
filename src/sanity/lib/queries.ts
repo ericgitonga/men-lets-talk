@@ -200,6 +200,26 @@ export type SanityStory = {
   publishedAt: string;
 };
 
+// Homepage teaser (#23 THE FEELING WE WANT TO CREATE — the "CONNECTION" step, "there are other
+// men like me"): a couple of real stories, not the full list. `pt::text(body)` then truncate in
+// JS, same fix as SEARCH_QUERY/the site search bug (#49) — GROQ string slicing only works on
+// arrays, not strings, and silently returns null.
+export const HOME_STORIES_PREVIEW_QUERY = /* groq */ `
+  *[_type == "story" && consentGiven == true] | order(publishedAt desc) [0...2] {
+    _id,
+    name,
+    ageOrCategory,
+    "excerpt": pt::text(body)
+  }
+`;
+
+export type SanityStoryPreview = {
+  _id: string;
+  name?: string | null;
+  ageOrCategory?: string | null;
+  excerpt?: string | null;
+};
+
 // Searches across the 3 content types the brief names ("articles, resources, events, and
 // stories" — resources are just articles). $q is passed already wildcarded (see the search
 // page) — parameterized, so wildcard characters a user types can't break out of the match.
