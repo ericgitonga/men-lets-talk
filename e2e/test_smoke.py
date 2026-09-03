@@ -86,6 +86,26 @@ def test_register_api_returns_503_when_not_configured():
         assert resp.status == 503
 
 
+def test_subscribe_api_rejects_invalid_body():
+    with browser_page() as page:
+        resp = page.request.post(f"{BASE_URL}/api/subscribe", data={"email": "not-an-email"})
+        assert resp.status == 400
+
+
+def test_subscribe_api_returns_503_when_not_configured():
+    # Same rationale as test_register_api_returns_503_when_not_configured: no write token in
+    # CI, so this verifies graceful degradation. The full write path is verified manually.
+    with browser_page() as page:
+        resp = page.request.post(f"{BASE_URL}/api/subscribe", data={"email": "test@example.com"})
+        assert resp.status == 503
+
+
+def test_homepage_has_subscribe_form():
+    with browser_page() as page:
+        page.goto("/")
+        assert page.get_by_test_id("stay-connected-section").get_by_test_id("subscribe-form").is_visible()
+
+
 def test_contact_form_submit_shows_pending_message():
     # No email-delivery backend yet (issue #66) — verify the "coming soon" UX path, not a
     # real send, since there's nothing to send to.
@@ -228,6 +248,9 @@ TESTS = [
     test_get_involved_page_loads,
     test_register_api_rejects_invalid_body,
     test_register_api_returns_503_when_not_configured,
+    test_subscribe_api_rejects_invalid_body,
+    test_subscribe_api_returns_503_when_not_configured,
+    test_homepage_has_subscribe_form,
     test_contact_form_submit_shows_pending_message,
     test_partners_page_has_become_a_partner_cta,
     test_about_page_loads,

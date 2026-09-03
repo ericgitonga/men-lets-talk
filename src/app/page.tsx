@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import heroImage from "@/assets/hero-men-talking.jpg";
+import { SubscribeForm } from "@/components/SubscribeForm";
 
 const PILLARS = [
   { name: "Talk", description: "Create safe spaces for honest conversations." },
@@ -104,6 +105,19 @@ export default function Home() {
               {topic.label}
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Stay Connected — email database (brief section 17) */}
+      <section data-testid="stay-connected-section" className="bg-neutral-100 px-6 py-16">
+        <div className="mx-auto max-w-md text-center">
+          <h2 className="text-2xl font-bold">Stay Connected</h2>
+          <p className="mt-2 text-neutral-600">
+            Get updates on events, new resources, and conversations — pick what matters to you.
+          </p>
+          <div className="mt-6 text-left">
+            <SubscribeForm />
+          </div>
         </div>
       </section>
     </main>
