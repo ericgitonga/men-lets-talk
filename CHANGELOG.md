@@ -6,6 +6,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.19.0] - 2026-09-04
+
+### Added
+
+- Homepage "Upcoming Events" teaser (#7 UPCOMING EVENTS): the brief calls for displaying the
+  next 3-4 events prominently, each with name/date/location/description and a Register button,
+  plus a "View All Events →" button below — none of that existed on the homepage despite
+  `/events` being fully built and wired since v0.2.0. Added a 3-event preview reusing the
+  existing `EVENTS_QUERY` (already ordered soonest-first) and the existing `RegisterForm`
+  component directly, so registration works inline from the homepage without navigating away.
+  Hidden entirely, same as the stories preview, when there are no upcoming events.
+
+Verified end-to-end against production Sanity with a real temporary "Zephyrmoot Test Event"
+(2099 date, Men's Breakfast category), confirming the card renders correctly and the inline
+Register form opens, then deleted.
+
 ## [0.18.0] - 2026-09-04
 
 ### Added
