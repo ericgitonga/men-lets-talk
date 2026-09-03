@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
@@ -34,6 +35,10 @@ export default async function CommunityPage() {
 
   return (
     <main data-testid="community-page" className="mx-auto max-w-3xl px-6 py-16">
+      <Breadcrumb
+        data-testid="breadcrumb"
+        items={[{ label: "Home", href: "/" }, { label: "Community" }]}
+      />
       <h1 className="text-3xl font-bold">Find Your Space.</h1>
       <p className="mt-4 text-neutral-600">
         Not every man needs the same kind of community — a space where men support one another

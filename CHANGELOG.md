@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.10.0] - 2026-09-03
+
+### Added
+
+- `/talk` page ("Let's Talk" content hub): 7 topic categories with their sub-topics from the
+  brief, each linking into `/resources?topic=X`, replacing the placeholder stub (closes #11,
+  part of #44)
+- Breadcrumb navigation (`Home > <Page>`) wired into every top-level page via the scaffold's
+  previously-unused `Breadcrumb.tsx` component (closes #62)
+
+### Closed
+
+- #9 (Stories) and #10 (Resources) — substantively satisfied by the existing wiring work
+  (v0.3.0/v0.4.0); see issue comments for the minor deferred/modelling notes on each
+
 ## [0.9.0] - 2026-09-03
 
 ### Added

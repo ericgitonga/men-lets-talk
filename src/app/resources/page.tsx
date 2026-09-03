@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
@@ -44,6 +45,10 @@ export default async function ResourcesPage({
 
   return (
     <main data-testid="resources-page" className="mx-auto max-w-3xl px-6 py-16">
+      <Breadcrumb
+        data-testid="breadcrumb"
+        items={[{ label: "Home", href: "/" }, { label: "Resources" }]}
+      />
       <h1 className="text-3xl font-bold">You don&apos;t have to figure it all out alone.</h1>
 
       <nav data-testid="topic-filter" className="mt-6 flex flex-wrap gap-2">

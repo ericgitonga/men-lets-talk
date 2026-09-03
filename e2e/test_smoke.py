@@ -58,10 +58,29 @@ def test_mobile_nav_closes_on_outside_click():
 
 
 def test_placeholder_nav_pages_load():
-    for path in ("/talk", "/get-involved"):
+    for path in ("/get-involved",):
         with browser_page() as page:
             resp = page.goto(path)
             assert resp.status == 200
+
+
+def test_talk_page_loads_and_links_to_filtered_resources():
+    with browser_page() as page:
+        resp = page.goto("/talk")
+        assert resp.status == 200
+        assert page.get_by_test_id("talk-categories").is_visible()
+        page.get_by_role("link", name="See Fatherhood resources →", exact=True).click()
+        page.wait_for_url("**/resources?topic=fatherhood")
+
+
+def test_breadcrumb_links_back_home():
+    with browser_page() as page:
+        page.goto("/about")
+        breadcrumb = page.get_by_test_id("breadcrumb")
+        assert breadcrumb.is_visible()
+        breadcrumb.get_by_role("link", name="Home", exact=True).click()
+        page.wait_for_url("**/")
+        assert page.get_by_test_id("hero-section").is_visible()
 
 
 def test_about_page_loads():
@@ -146,6 +165,8 @@ TESTS = [
     test_mobile_nav_closes_on_outside_click,
     test_placeholder_nav_pages_load,
     test_about_page_loads,
+    test_talk_page_loads_and_links_to_filtered_resources,
+    test_breadcrumb_links_back_home,
     test_health_endpoint,
     test_events_page_loads,
     test_resources_page_loads,

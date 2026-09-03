@@ -1,3 +1,5 @@
+import Breadcrumb from "@/components/Breadcrumb";
+
 const VALUES = [
   { name: "Honesty", description: "We tell the truth about our journeys." },
   { name: "Community", description: "No man should walk alone." },
@@ -19,6 +21,10 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main data-testid="about-page" className="mx-auto max-w-3xl px-6 py-16">
+      <Breadcrumb
+        data-testid="breadcrumb"
+        items={[{ label: "Home", href: "/" }, { label: "About" }]}
+      />
       <h1 className="text-3xl font-bold">About Men Let&apos;s Talk</h1>
       <p className="mt-4 text-lg text-neutral-700">
         Men Let&apos;s Talk is a digital home where men can find honest conversations,
