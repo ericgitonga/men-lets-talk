@@ -106,6 +106,15 @@ def test_homepage_has_subscribe_form():
         assert page.get_by_test_id("stay-connected-section").get_by_test_id("subscribe-form").is_visible()
 
 
+def test_whatsapp_button_present_on_every_page():
+    for path in ("/", "/about", "/events", "/resources", "/stories", "/contact"):
+        with browser_page() as page:
+            page.goto(path)
+            button = page.get_by_test_id("whatsapp-button")
+            assert button.is_visible()
+            assert button.get_attribute("href") == "https://wa.me/254720450565"
+
+
 def test_contact_form_submit_shows_pending_message():
     # No email-delivery backend yet (issue #66) — verify the "coming soon" UX path, not a
     # real send, since there's nothing to send to.
@@ -251,6 +260,7 @@ TESTS = [
     test_subscribe_api_rejects_invalid_body,
     test_subscribe_api_returns_503_when_not_configured,
     test_homepage_has_subscribe_form,
+    test_whatsapp_button_present_on_every_page,
     test_contact_form_submit_shows_pending_message,
     test_partners_page_has_become_a_partner_cta,
     test_about_page_loads,

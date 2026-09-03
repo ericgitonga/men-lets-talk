@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.15.0] - 2026-09-03
+
+### Added
+
+- Prominent floating WhatsApp button, fixed bottom-right on every page, linking to the client's
+  real WhatsApp number (confirmed from their event flyers) via `wa.me` (closes #48)
+- `src/lib/contactInfo.ts` — centralizes the real WhatsApp/Instagram contact details (previously
+  only defined inline in the Contact page) so this button and future features share one source
+
 ## [0.14.0] - 2026-09-03
 
 ### Added
