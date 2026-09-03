@@ -98,6 +98,30 @@ export const RESOURCE_TYPE_LABELS: Record<string, string> = {
   "recommended-resource": "Recommended Resource",
 };
 
+export const BOOKS_QUERY = /* groq */ `
+  *[_type == "book"] | order(title asc) {
+    _id,
+    title,
+    coverImage,
+    author,
+    description,
+    whyWritten,
+    purchaseUrl,
+    testimonials
+  }
+`;
+
+export type SanityBook = {
+  _id: string;
+  title: string;
+  coverImage?: { asset?: { _ref: string } } | null;
+  author: string;
+  description?: string | null;
+  whyWritten?: string | null;
+  purchaseUrl?: string | null;
+  testimonials?: { _key: string; quote: string; attribution?: string }[] | null;
+};
+
 export const COMMUNITY_GROUPS_QUERY = /* groq */ `
   *[_type == "communityGroup"] | order(name asc) {
     _id,

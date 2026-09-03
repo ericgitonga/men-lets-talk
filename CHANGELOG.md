@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.7.0] - 2026-09-03
+
+### Added
+
+- `/books` page, fetching live from Sanity's `book` document type (cover, author, description,
+  why-written, purchase link, testimonials), per brief section 15. Verified end-to-end with a
+  temporary test book (including a testimonial) created in the Studio and deleted before
+  merging (closes #40, part of #41 and #27)
+
 ## [0.6.0] - 2026-09-03
 
 ### Added

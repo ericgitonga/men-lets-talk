@@ -67,6 +67,13 @@ def test_community_page_loads():
         assert page.get_by_test_id("community-empty-state").is_visible()
 
 
+def test_books_page_loads():
+    with browser_page() as page:
+        resp = page.goto("/books")
+        assert resp.status == 200
+        assert page.get_by_test_id("books-empty-state").is_visible()
+
+
 TESTS = [
     test_homepage_loads,
     test_health_endpoint,
@@ -76,6 +83,7 @@ TESTS = [
     test_stories_page_loads,
     test_partners_page_loads,
     test_community_page_loads,
+    test_books_page_loads,
 ]
 
 if __name__ == "__main__":
