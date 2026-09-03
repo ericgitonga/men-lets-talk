@@ -98,6 +98,34 @@ export const RESOURCE_TYPE_LABELS: Record<string, string> = {
   "recommended-resource": "Recommended Resource",
 };
 
+export const PARTNERS_QUERY = /* groq */ `
+  *[_type == "partner"] | order(name asc) {
+    _id,
+    name,
+    logo,
+    description,
+    partnershipType,
+    websiteUrl
+  }
+`;
+
+export type SanityPartner = {
+  _id: string;
+  name: string;
+  logo?: { asset?: { _ref: string } } | null;
+  description: string;
+  partnershipType: string;
+  websiteUrl?: string | null;
+};
+
+export const PARTNERSHIP_TYPE_LABELS: Record<string, string> = {
+  "corporate-wellness": "Corporate Men's Wellness",
+  "event-sponsorship": "Event Sponsorship",
+  "community-initiatives": "Community Initiatives",
+  "mental-health-initiatives": "Mental-Health Initiatives",
+  "media-partnerships": "Media Partnerships",
+};
+
 // consentGiven == true is filtered here in the query itself — defence in depth alongside the
 // schema's publish-time validation (mlt-cms's story.ts), so a bug or manual API write that
 // slips past that validation still can't surface an unconsented story on the site.

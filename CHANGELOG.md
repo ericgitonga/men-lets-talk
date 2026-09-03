@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.5.0] - 2026-09-03
+
+### Added
+
+- `/partners` page, fetching live from Sanity's `partner` document type (logo, blurb,
+  partnership type, website), per brief section 14. Verified end-to-end with a temporary test
+  partner created in the Studio and deleted before merging (closes #38, part of #41 and #27)
+
 ## [0.4.0] - 2026-09-03
 
 ### Added
