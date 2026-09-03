@@ -49,7 +49,7 @@ export default async function EventsPage() {
       ) : (
         <ul data-testid="events-list" className="mt-8 space-y-8">
           {events.map((event) => (
-            <li key={event._id} data-testid="event-item" className="border-b border-neutral-200 pb-8">
+            <li id={event._id} key={event._id} data-testid="event-item" className="scroll-mt-24 border-b border-neutral-200 pb-8">
               {event.image && (
                 <Image
                   src={urlForImage(event.image).width(800).height(450).url()}

@@ -77,7 +77,7 @@ export default async function ResourcesPage({
       ) : (
         <ul data-testid="resources-list" className="mt-8 space-y-8">
           {articles.map((article) => (
-            <li key={article._id} data-testid="resource-item" className="border-b border-neutral-200 pb-8">
+            <li id={article._id} key={article._id} data-testid="resource-item" className="scroll-mt-24 border-b border-neutral-200 pb-8">
               {article.featuredImage && (
                 <Image
                   src={urlForImage(article.featuredImage).width(800).height(450).url()}

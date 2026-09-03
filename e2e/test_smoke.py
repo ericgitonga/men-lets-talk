@@ -115,6 +115,31 @@ def test_whatsapp_button_present_on_every_page():
             assert button.get_attribute("href") == "https://wa.me/254720450565"
 
 
+def test_search_prompts_when_no_query():
+    with browser_page() as page:
+        resp = page.goto("/search")
+        assert resp.status == 200
+        assert page.get_by_test_id("search-prompt").is_visible()
+
+
+def test_search_shows_empty_state_when_no_results():
+    # No token in CI (zero cloud credentials — see ONBOARDING.md), so any query returns no
+    # results here. The full search path (real content across all 3 types, found and
+    # deep-linking correctly) is verified manually before merging, same as the other
+    # Sanity-backed features.
+    with browser_page() as page:
+        resp = page.goto("/search?q=anything")
+        assert resp.status == 200
+        assert page.get_by_test_id("search-empty-state").is_visible()
+
+
+def test_header_has_search_link():
+    with browser_page() as page:
+        page.goto("/")
+        page.get_by_test_id("search-link").click()
+        page.wait_for_url("**/search")
+
+
 def test_contact_form_submit_shows_pending_message():
     # No email-delivery backend yet (issue #66) — verify the "coming soon" UX path, not a
     # real send, since there's nothing to send to.
@@ -261,6 +286,9 @@ TESTS = [
     test_subscribe_api_returns_503_when_not_configured,
     test_homepage_has_subscribe_form,
     test_whatsapp_button_present_on_every_page,
+    test_search_prompts_when_no_query,
+    test_search_shows_empty_state_when_no_results,
+    test_header_has_search_link,
     test_contact_form_submit_shows_pending_message,
     test_partners_page_has_become_a_partner_cta,
     test_about_page_loads,
