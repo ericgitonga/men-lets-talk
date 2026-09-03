@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import { PortableText } from "next-sanity";
+import { VideoEmbed } from "@/components/VideoEmbed";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import {
@@ -65,9 +66,7 @@ export default async function StoriesPage() {
                 </div>
               )}
               {story.videoUrl && (
-                <a href={story.videoUrl} className="mt-3 inline-block underline">
-                  Watch this story
-                </a>
+                <VideoEmbed url={story.videoUrl} title={`${story.name || "Anonymous"}'s story`} />
               )}
             </li>
           ))}

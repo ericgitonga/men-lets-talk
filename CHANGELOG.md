@@ -6,6 +6,25 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.14.0] - 2026-09-03
+
+### Added
+
+- `VideoEmbed` component: recognizes YouTube (`watch?v=`, `youtu.be`, `/embed/`) and Vimeo
+  URLs and renders a real responsive inline iframe player, falling back to a plain outbound
+  link for unrecognized hosts. Replaces the plain "Watch / Listen" links on `/resources` and
+  `/stories`, which only linked out rather than embedding (closes #52)
+- Unit tests for the URL-parsing logic (`VideoEmbed.test.ts`)
+
+### Fixed
+
+- Resource downloads now use the `download` HTML attribute so the browser saves the file
+  directly instead of possibly opening it inline (closes #53)
+
+Both verified end-to-end with a real temporary article (YouTube video + an uploaded test file
+asset) and a real temporary story (YouTube video), confirming actual embeds render and the
+download link/attribute work, then deleted before merging.
+
 ## [0.13.0] - 2026-09-03
 
 ### Added
