@@ -53,6 +53,13 @@ def test_stories_page_loads():
         assert page.get_by_test_id("stories-empty-state").is_visible()
 
 
+def test_partners_page_loads():
+    with browser_page() as page:
+        resp = page.goto("/partners")
+        assert resp.status == 200
+        assert page.get_by_test_id("partners-empty-state").is_visible()
+
+
 TESTS = [
     test_homepage_loads,
     test_health_endpoint,
@@ -60,6 +67,7 @@ TESTS = [
     test_resources_page_loads,
     test_resources_topic_filter_loads,
     test_stories_page_loads,
+    test_partners_page_loads,
 ]
 
 if __name__ == "__main__":
