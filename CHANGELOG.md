@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.9.0] - 2026-09-03
+
+### Added
+
+- `/about` page: Our Story, Our Why, Our Vision, Our Mission, and Our Values (6 values),
+  replacing the placeholder stub, with the site's one-sentence description (closes #12, closes
+  #26, part of #42)
+
 ## [0.8.0] - 2026-09-03
 
 ### Added
