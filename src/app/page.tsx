@@ -2,9 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import heroImage from "@/assets/hero-men-talking.jpg";
 import { SubscribeForm } from "@/components/SubscribeForm";
+import { RegisterForm } from "@/components/RegisterForm";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
-import { HOME_STORIES_PREVIEW_QUERY, type SanityStoryPreview } from "@/sanity/lib/queries";
+import { urlForImage } from "@/sanity/lib/image";
+import {
+  EVENTS_QUERY,
+  EVENT_CATEGORY_LABELS,
+  HOME_STORIES_PREVIEW_QUERY,
+  type SanityEvent,
+  type SanityStoryPreview,
+} from "@/sanity/lib/queries";
 import { truncate } from "@/lib/text";
 
 export const revalidate = 60;
@@ -31,6 +39,23 @@ const CARRYING_TOPICS = [
   { label: "Starting Again", value: "starting-again" },
 ];
 
+// Brief section 7 (UPCOMING EVENTS): "Display the next 3-4 events prominently." Reuses the
+// same EVENTS_QUERY as the /events page (already ordered soonest-first) rather than a near-
+// duplicate GROQ string, since the only difference is how many of the result are shown.
+async function getUpcomingEvents(): Promise<SanityEvent[]> {
+  // No token configured (e.g. CI, which runs with zero cloud credentials — see
+  // ONBOARDING.md) — treat as "no events" rather than attempting an unauthenticated
+  // request against the private dataset.
+  if (!readToken) return [];
+
+  try {
+    return await client.fetch(EVENTS_QUERY);
+  } catch (error) {
+    console.error("Failed to fetch events from Sanity:", error);
+    return [];
+  }
+}
+
 async function getStoryPreviews(): Promise<SanityStoryPreview[]> {
   // No token configured (e.g. CI, which runs with zero cloud credentials — see
   // ONBOARDING.md) — treat as "no stories" rather than attempting an unauthenticated
@@ -46,6 +71,7 @@ async function getStoryPreviews(): Promise<SanityStoryPreview[]> {
 }
 
 export default async function Home() {
+  const upcomingEvents = (await getUpcomingEvents()).slice(0, 3);
   const storyPreviews = await getStoryPreviews();
 
   return (
@@ -135,6 +161,53 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      {/* Upcoming events (#7 UPCOMING EVENTS — "display the next 3-4 events prominently").
+          Hidden entirely rather than showing an empty state, same reasoning as the stories
+          teaser below. */}
+      {upcomingEvents.length > 0 && (
+        <section data-testid="home-events-section" className="mx-auto max-w-5xl px-6 py-20">
+          <h2 className="text-center text-3xl font-bold">Upcoming Events</h2>
+          <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {upcomingEvents.map((event) => (
+              <div key={event._id} className="rounded-lg border border-neutral-200 p-6">
+                {event.image && (
+                  <Image
+                    src={urlForImage(event.image).width(400).height(225).url()}
+                    alt={event.name}
+                    width={400}
+                    height={225}
+                    className="mb-4 rounded-lg object-cover"
+                  />
+                )}
+                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+                  {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
+                </p>
+                <h3 className="mt-1 text-lg font-semibold">{event.name}</h3>
+                <p className="mt-1 text-sm text-neutral-600">
+                  {new Date(event.date).toLocaleDateString("en-KE", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
+                  &middot; {event.location}
+                </p>
+                <p className="mt-3 text-sm">{event.description}</p>
+                {event.registrationOpen && <RegisterForm eventId={event._id} eventName={event.name} />}
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link
+              href="/events"
+              className="rounded-md bg-neutral-900 px-6 py-3 font-semibold text-white"
+            >
+              View All Events →
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Real stories teaser (#23 THE FEELING WE WANT TO CREATE — "there are other men like
           me"). Hidden entirely rather than showing an empty state — a homepage teaser with
