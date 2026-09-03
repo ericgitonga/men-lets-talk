@@ -39,6 +39,28 @@ const CARRYING_TOPICS = [
   { label: "Starting Again", value: "starting-again" },
 ];
 
+// Brief section 8 (OUR COMMUNITY): static "feature" categories, not CMS-driven — same pattern
+// as PILLARS/CARRYING_TOPICS above. The 3 audience-specific ones intentionally match mlt-cms's
+// communityGroup schema's `audience` enum wording exactly.
+const COMMUNITY_FEATURES = [
+  {
+    name: "No Man Walks Alone",
+    description: "A space where men support one another through life's different seasons.",
+  },
+  {
+    name: "Older Men Mentoring the Young",
+    description: "Creating intentional relationships between older and younger men.",
+  },
+  {
+    name: "Men with Children & Families",
+    description: "Conversations around fatherhood, marriage and family.",
+  },
+  {
+    name: "Men in Campus",
+    description: "Helping young men navigate identity, relationships, purpose and life.",
+  },
+];
+
 // Brief section 7 (UPCOMING EVENTS): "Display the next 3-4 events prominently." Reuses the
 // same EVENTS_QUERY as the /events page (already ordered soonest-first) rather than a near-
 // duplicate GROQ string, since the only difference is how many of the result are shown.
@@ -238,6 +260,32 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* Find Your Space (#8 OUR COMMUNITY). Static feature categories, not CMS-driven, so —
+          unlike the events/stories previews above — this always renders regardless of whether
+          any real community groups exist yet in Sanity. */}
+      <section data-testid="find-your-space-section" className="mx-auto max-w-4xl px-6 py-20">
+        <h2 className="text-center text-3xl font-bold">Find Your Space.</h2>
+        <p className="mx-auto mt-4 max-w-xl text-center text-neutral-600">
+          Not every man needs the same kind of community.
+        </p>
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {COMMUNITY_FEATURES.map((feature) => (
+            <div key={feature.name} className="rounded-lg border border-neutral-200 p-6">
+              <h3 className="text-lg font-bold uppercase tracking-wide">{feature.name}</h3>
+              <p className="mt-2 text-sm text-neutral-600">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 text-center">
+          <Link
+            href="/community"
+            className="rounded-md bg-neutral-900 px-6 py-3 font-semibold text-white"
+          >
+            Find Your Community →
+          </Link>
+        </div>
+      </section>
 
       {/* Stay Connected — email database (brief section 17) */}
       <section data-testid="stay-connected-section" className="bg-neutral-100 px-6 py-16">

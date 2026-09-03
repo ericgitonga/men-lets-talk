@@ -6,6 +6,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.20.0] - 2026-09-04
+
+### Added
+
+- Homepage "Find Your Space." section (#8 OUR COMMUNITY): the brief specifies a headline, an
+  intro line, 4 named "feature" categories (No Man Walks Alone; Older Men Mentoring the Young;
+  Men with Children & Families; Men in Campus), and a "Find Your Community →" button — none of
+  it existed anywhere on the site. Unlike the events/stories previews (v0.18.0/v0.19.0), these
+  4 categories are static brief content, not CMS-driven, so the section always renders
+  regardless of whether real community groups exist yet in Sanity (3 of the 4 names
+  intentionally match mlt-cms's `communityGroup` schema's `audience` enum wording exactly).
+  Placed after the stories preview, completing the homepage's Recognition → Action →
+  Connection → Belonging flow before the email signup.
+
 ## [0.19.0] - 2026-09-04
 
 ### Added
