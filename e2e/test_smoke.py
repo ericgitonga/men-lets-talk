@@ -16,6 +16,17 @@ def test_homepage_loads():
         assert page.get_by_test_id("carrying-section").is_visible()
 
 
+def test_hero_carries_brief_supporting_message():
+    # Regression test for #1 (THE BIG IDEA): the brief's exact supporting message — "Talk.
+    # Listen. Heal. Grow. Lead." — was never actually rendered anywhere on the site. Assert
+    # it's present verbatim in the hero, alongside the core message headline.
+    with browser_page() as page:
+        page.goto("/")
+        hero = page.get_by_test_id("hero-section")
+        assert hero.get_by_role("heading", level=1).text_content() == "No man should walk alone."
+        assert page.get_by_test_id("supporting-message").text_content() == "Talk. Listen. Heal. Grow. Lead."
+
+
 def test_carrying_topic_links_to_filtered_resources():
     with browser_page() as page:
         page.goto("/")
@@ -303,6 +314,7 @@ def test_books_page_loads():
 
 TESTS = [
     test_homepage_loads,
+    test_hero_carries_brief_supporting_message,
     test_carrying_topic_links_to_filtered_resources,
     test_desktop_nav_visible_no_hamburger,
     test_mobile_nav_hidden_behind_hamburger_toggle,
