@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.22.0] - 2026-09-04
+
+### Added
+
+- 2 of the brief's 6 primary CTAs (#21 CALL-TO-ACTION STRATEGY) were missing as literal button
+  text: "Attend an Event" (Get Involved's "Attend" card previously read "See Events") and
+  "Explore Resources" (new link added on the homepage, right after "What Are You Carrying?",
+  into the unfiltered `/resources`). A 3rd, "Find Your Community", was already fixed as a side
+  effect of #8 (v0.20.0). The 6th, "Share Your Story", stays intentionally deferred to #68 — a
+  real feature (public story submission), not a copy tweak.
+
 ## [0.21.0] - 2026-09-04
 
 ### Added

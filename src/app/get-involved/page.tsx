@@ -2,7 +2,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 
 const OPTIONS = [
-  { name: "Attend", description: "Come to a conversation or event.", cta: "See Events", href: "/events" },
+  { name: "Attend", description: "Come to a conversation or event.", cta: "Attend an Event", href: "/events" },
   {
     name: "Volunteer",
     description: "Use your skills and time to serve the movement.",

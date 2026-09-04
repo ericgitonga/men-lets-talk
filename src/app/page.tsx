@@ -182,6 +182,11 @@ export default async function Home() {
             </Link>
           ))}
         </div>
+        <div className="mt-10 text-center">
+          <Link href="/resources" className="font-semibold underline">
+            Explore Resources →
+          </Link>
+        </div>
       </section>
 
       {/* Upcoming events (#7 UPCOMING EVENTS — "display the next 3-4 events prominently").
