@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.26.0] - 2026-09-04
+
+### Added
+
+- Design system typography (#20, brief section 20): one bold/impactful headline font (Oswald)
+  applied sitewide to all headings and the "signature statement" pull-quotes, and one clean/
+  readable body font (Inter) for everything else — replacing the unstyled `create-next-app`
+  defaults (Geist was loaded but never actually applied; `body` hardcoded plain `Arial`).
+
 ## [0.25.1] - 2026-09-04
 
 ### Fixed

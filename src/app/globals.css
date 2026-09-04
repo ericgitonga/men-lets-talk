@@ -9,8 +9,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-headline: var(--font-headline);
 }
 
 /* This site has one intentional light theme (per the brief — no dark-mode design has been
@@ -22,5 +22,14 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+}
+
+/* Brief section 20 (TYPOGRAPHY, #20): headings get the bold headline face sitewide, applied
+   once here rather than a font-headline utility class on every h1/h2/h3 across every page.
+   The "signature statement" pull-quotes (about/get-involved/talk/stories/home) are headline-
+   style callouts, not body copy, so they take the same face via their shared data-testid. */
+h1, h2, h3, h4, h5, h6, [data-testid="signature-statement"] {
+  font-family: var(--font-headline), Arial, Helvetica, sans-serif;
+  font-weight: 700;
 }
