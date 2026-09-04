@@ -11,6 +11,7 @@ import {
   EVENT_CATEGORY_LABELS,
   HOME_STORIES_PREVIEW_QUERY,
   SITE_SETTINGS_QUERY,
+  TOPIC_LABELS,
   type SanityEvent,
   type SanitySiteSettings,
   type SanityStoryPreview,
@@ -28,7 +29,9 @@ const FALLBACK_PILLARS = [
   { name: "Lead", description: "Raise men who positively influence their families and communities." },
 ];
 
-const CARRYING_TOPICS = [
+// Fallback only — rendered when siteSettings.featuredTopics is empty/unset. Editable in Studio
+// via the siteSettings singleton (mlt-cms#27, men-lets-talk#96), same pattern as pillars (#95).
+const FALLBACK_CARRYING_TOPICS = [
   { label: "Pressure", value: "pressure" },
   { label: "Failure", value: "failure" },
   { label: "Marriage", value: "marriage" },
@@ -43,10 +46,11 @@ const CARRYING_TOPICS = [
   { label: "Starting Again", value: "starting-again" },
 ];
 
-// Brief section 8 (OUR COMMUNITY): static "feature" categories, not CMS-driven — same pattern
-// as CARRYING_TOPICS above. The 3 audience-specific ones intentionally match mlt-cms's
-// communityGroup schema's `audience` enum wording exactly.
-const COMMUNITY_FEATURES = [
+// Brief section 8 (OUR COMMUNITY): fallback only — rendered when siteSettings.communityFeatures
+// is empty/unset. Editable in Studio via the siteSettings singleton (mlt-cms#27,
+// men-lets-talk#97), same pattern as pillars (#95). The 3 audience-specific names intentionally
+// match mlt-cms's communityGroup schema's `audience` enum wording exactly.
+const FALLBACK_COMMUNITY_FEATURES = [
   {
     name: "No Man Walks Alone",
     description: "A space where men support one another through life's different seasons.",
@@ -120,6 +124,14 @@ export default async function Home() {
     : null;
   const pillars =
     siteSettings?.pillars && siteSettings.pillars.length > 0 ? siteSettings.pillars : FALLBACK_PILLARS;
+  const carryingTopics =
+    siteSettings?.featuredTopics && siteSettings.featuredTopics.length > 0
+      ? siteSettings.featuredTopics.map((value) => ({ label: TOPIC_LABELS[value] ?? value, value }))
+      : FALLBACK_CARRYING_TOPICS;
+  const communityFeatures =
+    siteSettings?.communityFeatures && siteSettings.communityFeatures.length > 0
+      ? siteSettings.communityFeatures
+      : FALLBACK_COMMUNITY_FEATURES;
 
   return (
     <main data-testid="homepage">
@@ -209,7 +221,7 @@ export default async function Home() {
           okay.&rdquo;
         </p>
         <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-          {CARRYING_TOPICS.map((topic) => (
+          {carryingTopics.map((topic) => (
             <Link
               key={topic.value}
               href={`/resources?topic=${topic.value}`}
@@ -312,7 +324,7 @@ export default async function Home() {
           Not every man needs the same kind of community.
         </p>
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {COMMUNITY_FEATURES.map((feature) => (
+          {communityFeatures.map((feature) => (
             <div key={feature.name} className="rounded-lg border border-neutral-200 p-6">
               <h3 className="text-lg font-bold uppercase tracking-wide">{feature.name}</h3>
               <p className="mt-2 text-sm text-neutral-600">{feature.description}</p>

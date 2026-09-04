@@ -256,7 +256,9 @@ export const SITE_SETTINGS_QUERY = /* groq */ `
     heroSupportingMessage,
     heroDescription,
     heroImage,
-    pillars
+    pillars,
+    featuredTopics,
+    communityFeatures
   }
 `;
 
@@ -266,6 +268,8 @@ export type SanitySiteSettings = {
   heroDescription?: string | null;
   heroImage?: { asset?: { _ref: string } } | null;
   pillars?: { name: string; description: string }[] | null;
+  featuredTopics?: string[] | null;
+  communityFeatures?: { name: string; description: string }[] | null;
 };
 
 // Matches mlt-cms's schemaTypes/shared/topics.ts — duplicated here since this repo doesn't
