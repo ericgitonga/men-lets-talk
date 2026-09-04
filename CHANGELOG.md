@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.24.0] - 2026-09-04
+
+### Added
+
+- Required consent checkboxes on `RegisterForm` and `SubscribeForm` (#85, from the Kenya DPA
+  2019 compliance review, #28 §2): "I consent to Men Let's Talk collecting and storing this
+  information..." — hard submission blocker, same tier as the existing required fields. Both
+  `/api/register` and `/api/subscribe` now require `consentGiven: true` (400 otherwise) and
+  stamp `consentVersion`/`consentedAt` on the created Sanity document (mlt-cms v0.7.0's new
+  fields on `registration`/`subscriber`, matching the pattern already added to `story` for #68).
+  No `/privacy` page exists yet (#86), so the checkbox copy is self-contained rather than
+  linking to one — same approach used for #68's consent copy.
+
+Verified end-to-end against production Sanity with real temporary registration and subscription
+submissions via the actual API routes: confirmed both landed with `consentGiven`/
+`consentVersion`/`consentedAt` stamped correctly, then deleted (along with the temporary test
+event used for the registration case).
+
 ## [0.23.0] - 2026-09-04
 
 ### Added

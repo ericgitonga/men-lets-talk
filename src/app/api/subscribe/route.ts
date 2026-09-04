@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { writeClient } from "@/sanity/lib/writeClient";
 import { writeToken } from "@/sanity/env";
+import { SUBSCRIBE_CONSENT_VERSION } from "@/lib/consent";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VALID_INTERESTS = new Set(["events", "resources", "conversations", "newsletter"]);
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { email, interests } = (body ?? {}) as Record<string, unknown>;
+  const { email, interests, consentGiven } = (body ?? {}) as Record<string, unknown>;
 
   if (typeof email !== "string" || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "A valid email is required." }, { status: 400 });
@@ -27,17 +28,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid interests." }, { status: 400 });
     }
   }
+  if (consentGiven !== true) {
+    return NextResponse.json({ error: "Consent is required." }, { status: 400 });
+  }
 
   if (!writeToken) {
     return NextResponse.json({ error: "Subscriptions are not configured." }, { status: 503 });
   }
 
   try {
+    const now = new Date().toISOString();
     await writeClient.create({
       _type: "subscriber",
       email: email.trim(),
       interests: Array.isArray(interests) ? interests : [],
-      subscribedAt: new Date().toISOString(),
+      subscribedAt: now,
+      consentGiven: true,
+      consentVersion: SUBSCRIBE_CONSENT_VERSION,
+      consentedAt: now,
     });
   } catch (error) {
     console.error("Failed to create subscriber in Sanity:", error);

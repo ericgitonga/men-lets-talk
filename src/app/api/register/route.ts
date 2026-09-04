@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { writeClient } from "@/sanity/lib/writeClient";
 import { writeToken } from "@/sanity/env";
+import { REGISTRATION_CONSENT_VERSION } from "@/lib/consent";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { eventId, name, email, phone } = (body ?? {}) as Record<string, unknown>;
+  const { eventId, name, email, phone, consentGiven } = (body ?? {}) as Record<string, unknown>;
 
   if (typeof eventId !== "string" || !eventId) {
     return NextResponse.json({ error: "Missing event." }, { status: 400 });
@@ -31,19 +32,26 @@ export async function POST(request: Request) {
   if (phone !== undefined && typeof phone !== "string") {
     return NextResponse.json({ error: "Invalid phone." }, { status: 400 });
   }
+  if (consentGiven !== true) {
+    return NextResponse.json({ error: "Consent is required." }, { status: 400 });
+  }
 
   if (!writeToken) {
     return NextResponse.json({ error: "Registration is not configured." }, { status: 503 });
   }
 
   try {
+    const now = new Date().toISOString();
     await writeClient.create({
       _type: "registration",
       name: name.trim(),
       email: email.trim(),
       phone: typeof phone === "string" ? phone.trim() : undefined,
       event: { _type: "reference", _ref: eventId },
-      submittedAt: new Date().toISOString(),
+      submittedAt: now,
+      consentGiven: true,
+      consentVersion: REGISTRATION_CONSENT_VERSION,
+      consentedAt: now,
     });
   } catch (error) {
     console.error("Failed to create registration in Sanity:", error);
