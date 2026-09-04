@@ -6,6 +6,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.32.1] - 2026-09-05
+
+### Security
+
+- Added `import "server-only"` to `src/sanity/lib/client.ts` (the private-dataset read client),
+  matching the guard `writeClient.ts` already had. No active leak today (every current importer
+  is a Server Component), but this closes the gap where a future accidental import into a
+  Client Component would silently bundle `SANITY_API_READ_TOKEN` into the browser JS. Found in
+  the #29 adversarial security audit (`extras/clients/mlt/security-audit.pdf`).
+
+### Added
+
+- Full adversarial security audit report (closes #29): no Critical/High findings; 3 Medium
+  findings each filed as their own follow-up issue (#108 register API validation, #109 rate
+  limiting, #110 email-ownership verification), plus this release's one-line Low fix. See
+  `extras/clients/mlt/security-audit.pdf` for the full report.
+
 ## [0.32.0] - 2026-09-05
 
 ### Added
