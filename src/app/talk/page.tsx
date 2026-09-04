@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import talkListening from "@/assets/community/talk-listening.jpg";
 
 const CATEGORIES = [
   {
@@ -53,6 +55,15 @@ export const metadata = {
 export default function TalkPage() {
   return (
     <main data-testid="talk-page" className="mx-auto max-w-4xl px-6 py-16">
+      <div className="relative -mx-6 mb-10 h-56 overflow-hidden rounded-lg sm:h-72">
+        <Image
+          src={talkListening}
+          alt="A circle of men in quiet conversation, listening closely to one another"
+          fill
+          placeholder="blur"
+          className="object-cover"
+        />
+      </div>
       <Breadcrumb data-testid="breadcrumb" items={[{ label: "Home", href: "/" }, { label: "Let's Talk" }]} />
       <h1 className="text-3xl font-bold">Let&apos;s Talk</h1>
       <p className="mt-4 text-neutral-600">

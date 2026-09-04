@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import { PortableText } from "next-sanity";
@@ -9,6 +10,7 @@ import {
   TOPIC_LABELS,
   type SanityStory,
 } from "@/sanity/lib/queries";
+import storiesLaughing from "@/assets/community/stories-laughing.jpg";
 
 export const revalidate = 60;
 
@@ -36,6 +38,15 @@ export default async function StoriesPage() {
 
   return (
     <main data-testid="stories-page" className="mx-auto max-w-3xl px-6 py-16">
+      <div className="relative -mx-6 mb-10 h-56 overflow-hidden rounded-lg sm:h-72">
+        <Image
+          src={storiesLaughing}
+          alt="A group of Men Let's Talk members laughing together at a table"
+          fill
+          placeholder="blur"
+          className="object-cover"
+        />
+      </div>
       <Breadcrumb
         data-testid="breadcrumb"
         items={[{ label: "Home", href: "/" }, { label: "Stories" }]}
