@@ -228,6 +228,17 @@ def test_register_api_rejects_invalid_body():
         assert resp.status == 400
 
 
+def test_register_api_requires_consent():
+    # Regression test for #85 (Kenya DPA 2019 compliance review, #28 §2): a submission without
+    # explicit consent must be rejected, same tier as a missing required field.
+    with browser_page() as page:
+        resp = page.request.post(
+            f"{BASE_URL}/api/register",
+            data={"eventId": "x", "name": "Test", "email": "test@example.com"},
+        )
+        assert resp.status == 400
+
+
 def test_register_api_returns_503_when_not_configured():
     # No SANITY_API_WRITE_TOKEN in CI (zero cloud credentials — see ONBOARDING.md), so this
     # verifies the route degrades gracefully instead of crashing or silently writing nothing.
@@ -237,7 +248,7 @@ def test_register_api_returns_503_when_not_configured():
     with browser_page() as page:
         resp = page.request.post(
             f"{BASE_URL}/api/register",
-            data={"eventId": "x", "name": "Test", "email": "test@example.com"},
+            data={"eventId": "x", "name": "Test", "email": "test@example.com", "consentGiven": True},
         )
         assert resp.status == 503
 
@@ -248,12 +259,27 @@ def test_subscribe_api_rejects_invalid_body():
         assert resp.status == 400
 
 
+def test_subscribe_api_requires_consent():
+    with browser_page() as page:
+        resp = page.request.post(f"{BASE_URL}/api/subscribe", data={"email": "test@example.com"})
+        assert resp.status == 400
+
+
 def test_subscribe_api_returns_503_when_not_configured():
     # Same rationale as test_register_api_returns_503_when_not_configured: no write token in
     # CI, so this verifies graceful degradation. The full write path is verified manually.
     with browser_page() as page:
-        resp = page.request.post(f"{BASE_URL}/api/subscribe", data={"email": "test@example.com"})
+        resp = page.request.post(
+            f"{BASE_URL}/api/subscribe", data={"email": "test@example.com", "consentGiven": True}
+        )
         assert resp.status == 503
+
+
+def test_subscribe_form_has_required_consent_checkbox():
+    with browser_page() as page:
+        page.goto("/")
+        consent = page.get_by_test_id("stay-connected-section").locator('input[name="consentGiven"]')
+        assert consent.get_attribute("required") is not None
 
 
 def test_homepage_has_subscribe_form():
@@ -478,9 +504,12 @@ TESTS = [
     test_mobile_nav_closes_on_outside_click,
     test_get_involved_page_loads,
     test_register_api_rejects_invalid_body,
+    test_register_api_requires_consent,
     test_register_api_returns_503_when_not_configured,
     test_subscribe_api_rejects_invalid_body,
+    test_subscribe_api_requires_consent,
     test_subscribe_api_returns_503_when_not_configured,
+    test_subscribe_form_has_required_consent_checkbox,
     test_homepage_has_subscribe_form,
     test_whatsapp_button_present_on_every_page,
     test_search_prompts_when_no_query,

@@ -27,7 +27,11 @@ export function SubscribeForm() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.get("email"), interests }),
+        body: JSON.stringify({
+          email: form.get("email"),
+          interests,
+          consentGiven: form.get("consentGiven") === "on",
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong.");
@@ -63,6 +67,10 @@ export function SubscribeForm() {
           </label>
         ))}
       </div>
+      <label className="flex items-start gap-2 text-sm text-neutral-600">
+        <input type="checkbox" name="consentGiven" required className="mt-1" />
+        <span>I consent to Men Let&apos;s Talk collecting and storing this information to keep me connected.</span>
+      </label>
       {error && (
         <p data-testid="subscribe-error" className="text-sm text-red-600">
           {error}
