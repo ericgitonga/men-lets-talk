@@ -62,9 +62,9 @@ export default function PrivacyPage() {
       <section className="mt-10">
         <h2 className="text-xl font-bold">How long we keep it</h2>
         <p className="mt-3 text-neutral-700">
-          We keep your information only for as long as it&apos;s needed for the purpose it was
-          collected. We&apos;re finalising specific retention periods for each type of data
-          above — check back here for the confirmed timelines.
+          We don&apos;t currently apply a fixed retention period to this information. If we adopt
+          one in future, we&apos;ll update this notice. In the meantime, you can ask us to delete
+          your information at any time — see your rights below.
         </p>
       </section>
 

@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.25.1] - 2026-09-04
+
+### Fixed
+
+- `/privacy`'s "How long we keep it" section updated to reflect the client's actual decision on
+  #87 (Kenya DPA 2019 compliance review, #28 §5): no fixed retention period for now, data
+  deletable on request. Previously said periods were "being finalised," which was no longer
+  accurate once the decision was made.
+
 ## [0.25.0] - 2026-09-04
 
 ### Added
