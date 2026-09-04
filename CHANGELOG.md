@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.32.0] - 2026-09-05
+
+### Added
+
+- About page's "Our Values" section (closes #105) now reads from `mlt-cms`'s `siteSettings`
+  singleton's new `values` field (#31), found while auditing #103 for admin-editable content
+  still hardcoded outside the homepage. Falls back to the original 6 hardcoded values whenever
+  empty or unset.
+
 ## [0.31.0] - 2026-09-05
 
 ### Added

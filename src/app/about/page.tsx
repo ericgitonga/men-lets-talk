@@ -1,8 +1,15 @@
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumb";
 import aboutBrotherhood from "@/assets/community/about-brotherhood.jpg";
+import { client } from "@/sanity/lib/client";
+import { readToken } from "@/sanity/env";
+import { SITE_SETTINGS_QUERY, type SanitySiteSettings } from "@/sanity/lib/queries";
 
-const VALUES = [
+export const revalidate = 60;
+
+// Fallback only — rendered when siteSettings.values is empty/unset. Editable in Studio via the
+// siteSettings singleton (mlt-cms#31, men-lets-talk#105), same pattern as pillars (#95).
+const FALLBACK_VALUES = [
   { name: "Honesty", description: "We tell the truth about our journeys." },
   { name: "Community", description: "No man should walk alone." },
   { name: "Growth", description: "We believe men can change and become better." },
@@ -20,7 +27,27 @@ export const metadata = {
     "Men Let's Talk is a digital home where men can find honest conversations, meaningful community, practical resources and opportunities to grow.",
 };
 
-export default function AboutPage() {
+// Only siteSettings.values is used on this page — fetching the same shared query as the
+// homepage (rather than a narrower one) since it's the canonical query for this singleton.
+async function getSiteSettings(): Promise<SanitySiteSettings | null> {
+  // No token configured (e.g. CI, which runs with zero cloud credentials — see
+  // ONBOARDING.md) — treat as "not configured" rather than attempting an unauthenticated
+  // request against the private dataset.
+  if (!readToken) return null;
+
+  try {
+    return await client.fetch(SITE_SETTINGS_QUERY);
+  } catch (error) {
+    console.error("Failed to fetch site settings from Sanity:", error);
+    return null;
+  }
+}
+
+export default async function AboutPage() {
+  const siteSettings = await getSiteSettings();
+  const values =
+    siteSettings?.values && siteSettings.values.length > 0 ? siteSettings.values : FALLBACK_VALUES;
+
   return (
     <main data-testid="about-page" className="mx-auto max-w-3xl px-6 py-16">
       <div className="relative -mx-6 mb-10 h-56 overflow-hidden rounded-lg sm:h-72">
@@ -85,7 +112,7 @@ export default function AboutPage() {
       <section data-testid="our-values-section" className="mt-10">
         <h2 className="text-2xl font-bold">Our Values</h2>
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {VALUES.map((value) => (
+          {values.map((value) => (
             <div key={value.name}>
               <h3 className="font-bold uppercase tracking-wide">{value.name}</h3>
               <p className="mt-1 text-sm text-neutral-600">{value.description}</p>
