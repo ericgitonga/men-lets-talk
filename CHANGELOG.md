@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.28.0] - 2026-09-04
+
+### Added
+
+- Homepage hero (title, supporting message, description, image) now reads from `mlt-cms`'s new
+  `siteSettings` singleton (#94, part of the #24 admin/backend audit), so the MLT team can edit
+  it in Studio without a developer. Falls back per-field to the original hardcoded copy/image
+  whenever the singleton document doesn't exist yet or a field is left empty, so the homepage
+  never breaks or goes blank before an admin fills it in.
+
+Verified end-to-end against production Sanity with a real temporary `siteSettings` document
+(clearly marked test copy for title/supporting-message/description, image left unset): confirmed
+the CMS values override the fallback text while the image correctly falls back per-field, then
+deleted it, restoring the pre-launch fallback state.
+
+Other homepage sections (Pillars, "What Are You Carrying?" topics, "Find Your Space" community
+features) remain hardcoded — tracked as #95/#96/#97.
+
 ## [0.27.0] - 2026-09-04
 
 ### Added

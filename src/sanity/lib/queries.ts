@@ -247,6 +247,25 @@ export type SearchResults = {
   stories: { _id: string; name?: string | null; excerpt?: string | null }[];
 };
 
+// siteSettings is a Studio singleton (fixed document ID, not queried by _type — see mlt-cms's
+// sanity.config.ts) holding homepage content editable without a developer. Fetched by ID rather
+// than *[_type == "siteSettings"][0] to match how the Studio itself addresses it.
+export const SITE_SETTINGS_QUERY = /* groq */ `
+  *[_id == "siteSettings"][0] {
+    heroTitle,
+    heroSupportingMessage,
+    heroDescription,
+    heroImage
+  }
+`;
+
+export type SanitySiteSettings = {
+  heroTitle?: string | null;
+  heroSupportingMessage?: string | null;
+  heroDescription?: string | null;
+  heroImage?: { asset?: { _ref: string } } | null;
+};
+
 // Matches mlt-cms's schemaTypes/shared/topics.ts — duplicated here since this repo doesn't
 // depend on that one; keep the two in sync by hand if the taxonomy changes.
 export const TOPIC_LABELS: Record<string, string> = {

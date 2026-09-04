@@ -10,7 +10,9 @@ import {
   EVENTS_QUERY,
   EVENT_CATEGORY_LABELS,
   HOME_STORIES_PREVIEW_QUERY,
+  SITE_SETTINGS_QUERY,
   type SanityEvent,
+  type SanitySiteSettings,
   type SanityStoryPreview,
 } from "@/sanity/lib/queries";
 import { truncate } from "@/lib/text";
@@ -78,6 +80,21 @@ async function getUpcomingEvents(): Promise<SanityEvent[]> {
   }
 }
 
+// Homepage hero content (title, supporting message, description, image) is editable in Studio
+// via the siteSettings singleton (mlt-cms#21, men-lets-talk#94) — falls back to the brief's
+// original copy/image below whenever the document doesn't exist yet or a field is left empty,
+// so the homepage never breaks or goes blank before an admin fills it in.
+async function getSiteSettings(): Promise<SanitySiteSettings | null> {
+  if (!readToken) return null;
+
+  try {
+    return await client.fetch(SITE_SETTINGS_QUERY);
+  } catch (error) {
+    console.error("Failed to fetch site settings from Sanity:", error);
+    return null;
+  }
+}
+
 async function getStoryPreviews(): Promise<SanityStoryPreview[]> {
   // No token configured (e.g. CI, which runs with zero cloud credentials — see
   // ONBOARDING.md) — treat as "no stories" rather than attempting an unauthenticated
@@ -95,31 +112,47 @@ async function getStoryPreviews(): Promise<SanityStoryPreview[]> {
 export default async function Home() {
   const upcomingEvents = (await getUpcomingEvents()).slice(0, 3);
   const storyPreviews = await getStoryPreviews();
+  const siteSettings = await getSiteSettings();
+  const heroImageUrl = siteSettings?.heroImage
+    ? urlForImage(siteSettings.heroImage).width(1600).height(1200).url()
+    : null;
 
   return (
     <main data-testid="homepage">
       {/* Hero */}
       <section data-testid="hero-section" className="relative px-6 py-32 text-center text-white">
-        <Image
-          src={heroImage}
-          alt="Men gathered in conversation at a Men Let's Talk event"
-          fill
-          priority
-          placeholder="blur"
-          className="object-cover"
-        />
+        {heroImageUrl ? (
+          <Image
+            src={heroImageUrl}
+            alt="Men gathered in conversation at a Men Let's Talk event"
+            fill
+            priority
+            className="object-cover"
+          />
+        ) : (
+          <Image
+            src={heroImage}
+            alt="Men gathered in conversation at a Men Let's Talk event"
+            fill
+            priority
+            placeholder="blur"
+            className="object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-neutral-900/70" />
         <div className="relative">
-          <h1 className="mx-auto max-w-3xl text-4xl font-bold sm:text-5xl">No man should walk alone.</h1>
+          <h1 className="mx-auto max-w-3xl text-4xl font-bold sm:text-5xl">
+            {siteSettings?.heroTitle || "No man should walk alone."}
+          </h1>
           <p
             data-testid="supporting-message"
             className="mx-auto mt-4 text-sm font-semibold tracking-widest text-neutral-300 uppercase"
           >
-            Talk. Listen. Heal. Grow. Lead.
+            {siteSettings?.heroSupportingMessage || "Talk. Listen. Heal. Grow. Lead."}
           </p>
           <p className="mx-auto mt-6 max-w-xl text-lg text-neutral-200">
-            Men Let&apos;s Talk creates safe spaces where men can be honest, heard, supported and
-            equipped to navigate life together.
+            {siteSettings?.heroDescription ||
+              "Men Let's Talk creates safe spaces where men can be honest, heard, supported and equipped to navigate life together."}
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
