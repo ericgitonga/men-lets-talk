@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import getInvolvedGathering from "@/assets/community/get-involved-gathering.jpg";
 
 const OPTIONS = [
   { name: "Attend", description: "Come to a conversation or event.", cta: "Attend an Event", href: "/events" },
@@ -38,6 +40,15 @@ export const metadata = {
 export default function GetInvolvedPage() {
   return (
     <main data-testid="get-involved-page" className="mx-auto max-w-4xl px-6 py-16">
+      <div className="relative -mx-6 mb-10 h-56 overflow-hidden rounded-lg sm:h-72">
+        <Image
+          src={getInvolvedGathering}
+          alt="A small group of Men Let's Talk members gathered around a table at an evening event"
+          fill
+          placeholder="blur"
+          className="object-cover"
+        />
+      </div>
       <Breadcrumb data-testid="breadcrumb" items={[{ label: "Home", href: "/" }, { label: "Get Involved" }]} />
       <h1 className="text-3xl font-bold">There&apos;s a Place for You Here.</h1>
 

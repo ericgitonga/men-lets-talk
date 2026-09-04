@@ -6,6 +6,25 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.27.0] - 2026-09-04
+
+### Added
+
+- Real event photography (#19, brief section 19) on the About, Let's Talk, Stories and Get
+  Involved pages — previously text-only. 4 candid photos, curated from the client's own event
+  photo drop (`extras/clients/mlt/assets/`, outside the repo), added as a banner at the top of
+  each page: a group portrait for About (brotherhood), a listening circle for Let's Talk, a
+  laughing group for Stories, and a small evening gathering for Get Involved. Excluded from the
+  drop: 3 promotional flyers (co-branded AI-generated stock imagery, or a different venue's own
+  branding) — not the "authentic, not generic stock" photography the brief calls for. The
+  homepage hero image (`hero-men-talking.jpg`, added earlier) was already a real photo from the
+  same source.
+
+Content gap: the available photo set doesn't yet cover two categories the brief calls for —
+fathers with children, and older/younger men together. Real photography reflecting mixed-age
+mentoring and family moments still doesn't exist for this site; the underlying `extras/clients/
+mlt/assets/` folder should be revisited as the client adds more photos.
+
 ## [0.26.0] - 2026-09-04
 
 ### Added

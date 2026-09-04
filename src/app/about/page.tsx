@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumb";
+import aboutBrotherhood from "@/assets/community/about-brotherhood.jpg";
 
 const VALUES = [
   { name: "Honesty", description: "We tell the truth about our journeys." },
@@ -21,6 +23,15 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main data-testid="about-page" className="mx-auto max-w-3xl px-6 py-16">
+      <div className="relative -mx-6 mb-10 h-56 overflow-hidden rounded-lg sm:h-72">
+        <Image
+          src={aboutBrotherhood}
+          alt="Five Men Let's Talk members standing together, arms around each other's shoulders, laughing"
+          fill
+          placeholder="blur"
+          className="object-cover"
+        />
+      </div>
       <Breadcrumb
         data-testid="breadcrumb"
         items={[{ label: "Home", href: "/" }, { label: "About" }]}
