@@ -29,7 +29,7 @@ export default function AboutPage() {
           alt="Five Men Let's Talk members standing together, arms around each other's shoulders, laughing"
           fill
           placeholder="blur"
-          className="object-cover"
+          className="object-cover object-top"
         />
       </div>
       <Breadcrumb
