@@ -6,6 +6,19 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.29.0] - 2026-09-04
+
+### Added
+
+- Homepage Pillars section (Talk/Connect/Grow/Lead) now reads from `mlt-cms`'s `siteSettings`
+  singleton's new `pillars` field (#95, part of the #24 admin/backend audit), so the MLT team can
+  edit them in Studio without a developer. Falls back to the original hardcoded 4 pillars
+  whenever the field is empty or unset, so the section never goes blank before an admin
+  populates it.
+
+Other homepage sections ("What Are You Carrying?" topics, "Find Your Space" community features)
+remain hardcoded — tracked as #96/#97.
+
 ## [0.28.0] - 2026-09-04
 
 ### Added

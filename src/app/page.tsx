@@ -19,7 +19,9 @@ import { truncate } from "@/lib/text";
 
 export const revalidate = 60;
 
-const PILLARS = [
+// Fallback only — rendered when siteSettings.pillars is empty/unset. Editable in Studio via the
+// siteSettings singleton (mlt-cms#23, men-lets-talk#95), same pattern as the hero (#94).
+const FALLBACK_PILLARS = [
   { name: "Talk", description: "Create safe spaces for honest conversations." },
   { name: "Connect", description: "Build meaningful relationships and community." },
   { name: "Grow", description: "Equip men to become healthier men, fathers, husbands, leaders and friends." },
@@ -42,7 +44,7 @@ const CARRYING_TOPICS = [
 ];
 
 // Brief section 8 (OUR COMMUNITY): static "feature" categories, not CMS-driven — same pattern
-// as PILLARS/CARRYING_TOPICS above. The 3 audience-specific ones intentionally match mlt-cms's
+// as CARRYING_TOPICS above. The 3 audience-specific ones intentionally match mlt-cms's
 // communityGroup schema's `audience` enum wording exactly.
 const COMMUNITY_FEATURES = [
   {
@@ -116,6 +118,8 @@ export default async function Home() {
   const heroImageUrl = siteSettings?.heroImage
     ? urlForImage(siteSettings.heroImage).width(1600).height(1200).url()
     : null;
+  const pillars =
+    siteSettings?.pillars && siteSettings.pillars.length > 0 ? siteSettings.pillars : FALLBACK_PILLARS;
 
   return (
     <main data-testid="homepage">
@@ -178,7 +182,7 @@ export default async function Home() {
           about the things we often struggle to talk about.
         </p>
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {PILLARS.map((pillar) => (
+          {pillars.map((pillar) => (
             <div key={pillar.name} className="text-center">
               <h3 className="text-lg font-bold uppercase tracking-wide">{pillar.name}</h3>
               <p className="mt-2 text-sm text-neutral-600">{pillar.description}</p>
