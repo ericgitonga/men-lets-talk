@@ -59,6 +59,10 @@ export default function AboutPage() {
         </p>
       </section>
 
+      <p data-testid="signature-statement" className="mt-10 text-center text-xl font-bold text-neutral-800">
+        Your next chapter can be different.
+      </p>
+
       <section data-testid="our-mission-section" className="mt-10">
         <h2 className="text-2xl font-bold">Our Mission</h2>
         <p className="mt-3 text-neutral-700">

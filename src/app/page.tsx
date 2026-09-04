@@ -236,7 +236,7 @@ export default async function Home() {
           nothing to preview should just not appear, unlike a dedicated /stories page. */}
       {storyPreviews.length > 0 && (
         <section data-testid="stories-preview-section" className="mx-auto max-w-4xl px-6 py-20">
-          <h2 className="text-center text-3xl font-bold">Real Men. Real Stories.</h2>
+          <h2 className="text-center text-3xl font-bold">Real Men. Real Stories. Real Conversations.</h2>
           <p className="mx-auto mt-4 max-w-xl text-center text-neutral-600">
             You&apos;re not the only one carrying this. Here&apos;s what other men have shared.
           </p>

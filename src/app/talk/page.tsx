@@ -60,6 +60,10 @@ export default function TalkPage() {
         carrying.
       </p>
 
+      <p data-testid="signature-statement" className="mt-10 text-center text-xl font-bold text-neutral-800">
+        You don&apos;t have to carry it alone.
+      </p>
+
       <div data-testid="talk-categories" className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2">
         {CATEGORIES.map((category) => (
           <div key={category.topic} className="rounded-lg border border-neutral-200 p-6">

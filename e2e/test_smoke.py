@@ -27,6 +27,39 @@ def test_hero_carries_brief_supporting_message():
         assert page.get_by_test_id("supporting-message").text_content() == "Talk. Listen. Heal. Grow. Lead."
 
 
+def test_signature_statements_placed_on_other_pages():
+    # #22 SIGNATURE HOMEPAGE STATEMENTS: the brief gives a fixed pool of 8 exact statements
+    # ("can be used throughout the website as visual breaks"). 4 were completely unused before
+    # this — assert each one now appears verbatim on the page it was placed on.
+    placements = [
+        ("/talk", "You don't have to carry it alone."),
+        ("/get-involved", "There is strength in speaking."),
+        ("/stories", "Your story matters."),
+        ("/about", "Your next chapter can be different."),
+    ]
+    for path, text in placements:
+        with browser_page() as page:
+            page.goto(path)
+            assert page.get_by_test_id("signature-statement").text_content() == text
+
+
+def test_stories_heading_uses_full_three_part_statement():
+    # Regression test: the brief's exact statement is "Real Men. Real Stories. Real
+    # Conversations." — the site had only ever used the first two thirds of it.
+    with browser_page() as page:
+        page.goto("/stories")
+        assert page.get_by_role("heading", level=1).text_content() == (
+            "Real Men. Real Stories. Real Conversations."
+        )
+
+        page.goto("/")
+        preview_section = page.get_by_test_id("stories-preview-section")
+        if preview_section.count() > 0:
+            assert preview_section.get_by_role("heading", level=2).text_content() == (
+                "Real Men. Real Stories. Real Conversations."
+            )
+
+
 def test_homepage_find_your_space_section_always_renders():
     # #8 OUR COMMUNITY: unlike the events/stories previews, these 4 feature categories are
     # static brief content, not CMS-driven — assert the section and all 4 headline names
@@ -358,6 +391,8 @@ def test_books_page_loads():
 TESTS = [
     test_homepage_loads,
     test_hero_carries_brief_supporting_message,
+    test_signature_statements_placed_on_other_pages,
+    test_stories_heading_uses_full_three_part_statement,
     test_homepage_find_your_space_section_always_renders,
     test_homepage_hides_events_section_when_no_events,
     test_homepage_hides_stories_preview_when_no_stories,
