@@ -41,6 +41,10 @@ export default function GetInvolvedPage() {
       <Breadcrumb data-testid="breadcrumb" items={[{ label: "Home", href: "/" }, { label: "Get Involved" }]} />
       <h1 className="text-3xl font-bold">There&apos;s a Place for You Here.</h1>
 
+      <p data-testid="signature-statement" className="mt-10 text-center text-xl font-bold text-neutral-800">
+        There is strength in speaking.
+      </p>
+
       <div data-testid="get-involved-options" className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {OPTIONS.map((option) => (
           <div key={option.name} className="rounded-lg border border-neutral-200 p-6">

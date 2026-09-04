@@ -12,7 +12,7 @@ import {
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Real Men. Real Stories. | Men Let's Talk",
+  title: "Real Men. Real Stories. Real Conversations. | Men Let's Talk",
   description: "Stories from men navigating life, shared with their consent.",
 };
 
@@ -39,7 +39,11 @@ export default async function StoriesPage() {
         data-testid="breadcrumb"
         items={[{ label: "Home", href: "/" }, { label: "Stories" }]}
       />
-      <h1 className="text-3xl font-bold">Real Men. Real Stories.</h1>
+      <h1 className="text-3xl font-bold">Real Men. Real Stories. Real Conversations.</h1>
+
+      <p data-testid="signature-statement" className="mt-6 text-center text-xl font-bold text-neutral-800">
+        Your story matters.
+      </p>
 
       {stories.length === 0 ? (
         <p data-testid="stories-empty-state" className="mt-8 text-neutral-600">

@@ -6,6 +6,25 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.21.0] - 2026-09-04
+
+### Added
+
+- 4 of the brief's 8 signature homepage statements (#22) had never been used anywhere on the
+  site: "You don't have to carry it alone." (added to `/talk`), "There is strength in speaking."
+  (added to `/get-involved`), "Your story matters." (added to `/stories`), and "Your next
+  chapter can be different." (added to `/about`) — placed as visual breaks between each page's
+  intro and its main content grid, per the brief's own instruction that these "can be used
+  throughout the website as visual breaks."
+
+### Fixed
+
+- The signature statement "Real Men. Real Stories. Real Conversations." had only ever been used
+  as its first two-thirds, "Real Men. Real Stories." — on the `/stories` page's title/H1 and the
+  homepage stories preview's heading. Extended both to the full three-part statement.
+
+All 8 signature statements from the brief are now used somewhere on the site.
+
 ## [0.20.0] - 2026-09-04
 
 ### Added
