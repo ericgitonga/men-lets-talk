@@ -6,6 +6,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.25.0] - 2026-09-04
+
+### Added
+
+- `/privacy` notice page (#86, from the Kenya DPA 2019 compliance review, #28 §3): controller
+  identity, what's collected and why (per collection point), who else sees it (Sanity, Vercel —
+  named explicitly), a provisional retention statement (specific periods pending #87), data
+  subject rights (access/correct/delete via WhatsApp, 14-day response), and a website-analytics
+  note.
+- Site-wide footer (`Footer.tsx`): WhatsApp/Instagram details (reused from
+  `src/lib/contactInfo.ts`) and a Privacy link, added to every page via `layout.tsx`.
+- Privacy Notice link added to the Contact page and to the consent checkboxes on
+  `RegisterForm`/`SubscribeForm`/`ShareStoryForm` (previously self-contained, no page existed
+  yet). Consent version constants bumped (`-v2`) since the checkbox copy changed.
+
+### Fixed
+
+- The fixed `WhatsAppButton` (bottom-right, every page) directly covered the footer's Privacy
+  link once a visitor scrolled to the bottom — found while building this. Fixed with right-side
+  clearance on the footer sized to the button's footprint, verified with a regression e2e test
+  checking their bounding boxes never overlap.
+
 ## [0.24.0] - 2026-09-04
 
 ### Added

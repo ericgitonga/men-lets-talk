@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const INTERESTS = [
   { value: "events", label: "Upcoming events" },
@@ -69,7 +70,14 @@ export function SubscribeForm() {
       </div>
       <label className="flex items-start gap-2 text-sm text-neutral-600">
         <input type="checkbox" name="consentGiven" required className="mt-1" />
-        <span>I consent to Men Let&apos;s Talk collecting and storing this information to keep me connected.</span>
+        <span>
+          I consent to Men Let&apos;s Talk collecting and storing this information to keep me
+          connected, as described in our{" "}
+          <Link href="/privacy" className="underline">
+            Privacy Notice
+          </Link>
+          .
+        </span>
       </label>
       {error && (
         <p data-testid="subscribe-error" className="text-sm text-red-600">

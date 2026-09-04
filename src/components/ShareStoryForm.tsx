@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { WHATSAPP_URL } from "@/lib/contactInfo";
 import { TOPIC_LABELS } from "@/sanity/lib/queries";
 
@@ -118,7 +119,14 @@ export function ShareStoryForm() {
         </p>
         <label className="flex items-start gap-2">
           <input type="checkbox" name="processingConsentGiven" required className="mt-1" />
-          <span>I consent to Men Let&apos;s Talk collecting and storing the information I submit in this form.</span>
+          <span>
+            I consent to Men Let&apos;s Talk collecting and storing the information I submit in
+            this form, as described in our{" "}
+            <Link href="/privacy" className="underline">
+              Privacy Notice
+            </Link>
+            .
+          </span>
         </label>
         <label className="flex items-start gap-2">
           <input type="checkbox" name="consentGiven" required className="mt-1" />

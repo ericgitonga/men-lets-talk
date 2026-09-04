@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -81,7 +82,14 @@ export function RegisterForm({ eventId, eventName }: { eventId: string; eventNam
       />
       <label className="flex items-start gap-2 text-sm text-neutral-700">
         <input type="checkbox" name="consentGiven" required className="mt-1" />
-        <span>I consent to Men Let&apos;s Talk collecting and storing this information to process my event registration.</span>
+        <span>
+          I consent to Men Let&apos;s Talk collecting and storing this information to process my
+          event registration, as described in our{" "}
+          <Link href="/privacy" className="underline">
+            Privacy Notice
+          </Link>
+          .
+        </span>
       </label>
       {error && (
         <p data-testid="register-error" className="text-sm text-red-600">
