@@ -27,6 +27,50 @@ def test_hero_carries_brief_supporting_message():
         assert page.get_by_test_id("supporting-message").text_content() == "Talk. Listen. Heal. Grow. Lead."
 
 
+def test_footer_privacy_link_not_covered_by_whatsapp_button():
+    # Regression test: the fixed WhatsAppButton (bottom-6 right-6, 56px) sits at a constant
+    # viewport-relative position, so it visually coincides with the footer's rightmost content
+    # the moment a visitor scrolls to the bottom of any page — found while building #86.
+    with browser_page() as page:
+        page.goto("/")
+        page.get_by_test_id("site-footer").scroll_into_view_if_needed()
+        privacy_box = page.get_by_test_id("site-footer").get_by_role(
+            "link", name="Privacy", exact=True
+        ).bounding_box()
+        wa_box = page.get_by_test_id("whatsapp-button").bounding_box()
+        overlaps = not (
+            privacy_box["x"] + privacy_box["width"] < wa_box["x"]
+            or wa_box["x"] + wa_box["width"] < privacy_box["x"]
+            or privacy_box["y"] + privacy_box["height"] < wa_box["y"]
+            or wa_box["y"] + wa_box["height"] < privacy_box["y"]
+        )
+        assert not overlaps
+
+
+def test_footer_present_with_privacy_link_on_every_page():
+    for path in ("/", "/about", "/events", "/resources", "/stories", "/contact"):
+        with browser_page() as page:
+            page.goto(path)
+            footer = page.get_by_test_id("site-footer")
+            assert footer.is_visible()
+            footer.get_by_role("link", name="Privacy", exact=True).click()
+            page.wait_for_url("**/privacy")
+
+
+def test_privacy_page_loads():
+    with browser_page() as page:
+        resp = page.goto("/privacy")
+        assert resp.status == 200
+        assert page.get_by_role("heading", level=1).text_content() == "Privacy Notice"
+
+
+def test_contact_page_links_to_privacy():
+    with browser_page() as page:
+        page.goto("/contact")
+        page.get_by_role("link", name="Privacy Notice", exact=True).click()
+        page.wait_for_url("**/privacy")
+
+
 def test_share_your_story_page_loads_with_consent_checkboxes():
     with browser_page() as page:
         resp = page.goto("/share-your-story")
@@ -486,6 +530,10 @@ def test_books_page_loads():
 TESTS = [
     test_homepage_loads,
     test_hero_carries_brief_supporting_message,
+    test_footer_privacy_link_not_covered_by_whatsapp_button,
+    test_footer_present_with_privacy_link_on_every_page,
+    test_privacy_page_loads,
+    test_contact_page_links_to_privacy,
     test_share_your_story_page_loads_with_consent_checkboxes,
     test_stories_page_has_share_your_story_cta,
     test_share_story_api_rejects_invalid_body,

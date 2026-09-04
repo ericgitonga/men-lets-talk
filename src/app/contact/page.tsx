@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ContactForm } from "./ContactForm";
 import { WHATSAPP_NUMBER, WHATSAPP_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contactInfo";
@@ -29,6 +30,11 @@ export default function ContactPage() {
       </div>
 
       <ContactForm />
+
+      <p className="mt-6 text-sm text-neutral-500">
+        See our <Link href="/privacy" className="underline">Privacy Notice</Link> for how we
+        handle the information you share with us.
+      </p>
     </main>
   );
 }
