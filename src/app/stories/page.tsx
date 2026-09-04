@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import { PortableText } from "next-sanity";
 import { VideoEmbed } from "@/components/VideoEmbed";
@@ -44,6 +45,15 @@ export default async function StoriesPage() {
       <p data-testid="signature-statement" className="mt-6 text-center text-xl font-bold text-neutral-800">
         Your story matters.
       </p>
+
+      <div className="mt-6 text-center">
+        <Link
+          href="/share-your-story"
+          className="inline-block rounded-md bg-neutral-900 px-6 py-3 font-semibold text-white"
+        >
+          Share Your Story →
+        </Link>
+      </div>
 
       {stories.length === 0 ? (
         <p data-testid="stories-empty-state" className="mt-8 text-neutral-600">
