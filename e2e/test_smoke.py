@@ -27,6 +27,21 @@ def test_hero_carries_brief_supporting_message():
         assert page.get_by_test_id("supporting-message").text_content() == "Talk. Listen. Heal. Grow. Lead."
 
 
+def test_cta_strategy_primary_ctas_present():
+    # #21 CALL-TO-ACTION STRATEGY: the brief names 6 primary CTAs as literal button text. 3 were
+    # missing before this — "Find Your Community" (fixed by #8, v0.20.0), "Attend an Event" and
+    # "Explore Resources" (fixed here). The 6th, "Share Your Story", is intentionally deferred
+    # to #68 (a real feature — public story submission — not a copy tweak).
+    with browser_page() as page:
+        page.goto("/")
+        page.get_by_role("link", name="Explore Resources →", exact=True).click()
+        page.wait_for_url("**/resources")
+
+        page.goto("/get-involved")
+        page.get_by_role("link", name="Attend an Event →", exact=True).click()
+        page.wait_for_url("**/events")
+
+
 def test_signature_statements_placed_on_other_pages():
     # #22 SIGNATURE HOMEPAGE STATEMENTS: the brief gives a fixed pool of 8 exact statements
     # ("can be used throughout the website as visual breaks"). 4 were completely unused before
@@ -391,6 +406,7 @@ def test_books_page_loads():
 TESTS = [
     test_homepage_loads,
     test_hero_carries_brief_supporting_message,
+    test_cta_strategy_primary_ctas_present,
     test_signature_statements_placed_on_other_pages,
     test_stories_heading_uses_full_three_part_statement,
     test_homepage_find_your_space_section_always_renders,
