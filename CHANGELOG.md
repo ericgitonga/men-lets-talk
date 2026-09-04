@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.31.0] - 2026-09-05
+
+### Added
+
+- Homepage "What Are You Carrying?" topic chips (closes #96) and "Find Your Space" community
+  features (closes #97) now read from `mlt-cms`'s `siteSettings` singleton's new
+  `featuredTopics`/`communityFeatures` fields (#27, closing out the #24 admin/backend audit's
+  Homepage CMS sub-issues alongside #94/#95). `featuredTopics` stays constrained to the shared
+  topic taxonomy in Studio, so a chip's `/resources?topic=` link always resolves to real
+  content. Both fall back to the original hardcoded content whenever empty or unset.
+
 ## [0.30.0] - 2026-09-05
 
 ### Added
