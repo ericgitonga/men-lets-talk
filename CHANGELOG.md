@@ -6,6 +6,29 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.23.0] - 2026-09-04
+
+### Added
+
+- Public story-submission flow (#68, "Share Your Story"), unblocked by the Kenya DPA 2019
+  compliance review (#28). New `/share-your-story` page (`ShareStoryForm`) collecting name
+  (optional), age/category (optional), one or more topics, story text and/or a video link, and
+  2 separately-ticked consent checkboxes (general processing + publication, matching
+  mlt-cms v0.6.0's new `processingConsentGiven`/`consentVersion`/`consentedAt` fields). New
+  `/api/share-story` route validates the submission (topic required, story text or video link
+  required, both consents required, length caps) and writes it as a **Sanity draft**
+  (`drafts.<id>`), never a published document — the load-bearing moderation control from #28 §8,
+  keeping unmoderated public narrative off the live site until the MLT team reviews and
+  publishes it in Studio. "Share Your Story →" CTA added to the `/stories` page.
+- `src/lib/consent.ts`: `STORY_CONSENT_VERSION`, stamped server-side (never trusted from the
+  client) so a later consent-copy rewrite can't retroactively misrepresent what a submitter
+  actually agreed to.
+
+Verified end-to-end against production Sanity with a real temporary "Zephyrmoot" submission via
+the actual `/api/share-story` route: confirmed it landed as a draft with all consent fields
+correctly stamped, confirmed it does **not** appear on the live `/stories` page (the moderation
+gate holds), then deleted.
+
 ## [0.22.0] - 2026-09-04
 
 ### Added

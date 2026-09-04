@@ -27,6 +27,60 @@ def test_hero_carries_brief_supporting_message():
         assert page.get_by_test_id("supporting-message").text_content() == "Talk. Listen. Heal. Grow. Lead."
 
 
+def test_share_your_story_page_loads_with_consent_checkboxes():
+    with browser_page() as page:
+        resp = page.goto("/share-your-story")
+        assert resp.status == 200
+        form = page.get_by_test_id("share-story-form")
+        assert form.is_visible()
+        # Regression guard for #68/#28: both consent checkboxes must be present and required —
+        # a submission without explicit, separately-ticked consent should be impossible.
+        processing = page.locator('input[name="processingConsentGiven"]')
+        publication = page.locator('input[name="consentGiven"]')
+        assert processing.get_attribute("required") is not None
+        assert publication.get_attribute("required") is not None
+
+
+def test_stories_page_has_share_your_story_cta():
+    with browser_page() as page:
+        page.goto("/stories")
+        page.get_by_role("link", name="Share Your Story →", exact=True).click()
+        page.wait_for_url("**/share-your-story")
+
+
+def test_share_story_api_rejects_invalid_body():
+    with browser_page() as page:
+        resp = page.request.post(f"{BASE_URL}/api/share-story", data={"topics": []})
+        assert resp.status == 400
+
+
+def test_share_story_api_requires_both_consents():
+    with browser_page() as page:
+        resp = page.request.post(
+            f"{BASE_URL}/api/share-story",
+            data={"topics": ["faith"], "storyText": "test", "processingConsentGiven": True},
+        )
+        assert resp.status == 400
+
+
+def test_share_story_api_returns_503_when_not_configured():
+    # No SANITY_API_WRITE_TOKEN in CI (zero cloud credentials — see ONBOARDING.md), so this
+    # verifies the route degrades gracefully instead of crashing or silently writing nothing.
+    # The full write path (a real draft story landing in Sanity, never published) is verified
+    # manually before merging, same as the other Sanity-backed features.
+    with browser_page() as page:
+        resp = page.request.post(
+            f"{BASE_URL}/api/share-story",
+            data={
+                "topics": ["faith"],
+                "storyText": "test",
+                "processingConsentGiven": True,
+                "consentGiven": True,
+            },
+        )
+        assert resp.status == 503
+
+
 def test_cta_strategy_primary_ctas_present():
     # #21 CALL-TO-ACTION STRATEGY: the brief names 6 primary CTAs as literal button text. 3 were
     # missing before this — "Find Your Community" (fixed by #8, v0.20.0), "Attend an Event" and
@@ -406,6 +460,11 @@ def test_books_page_loads():
 TESTS = [
     test_homepage_loads,
     test_hero_carries_brief_supporting_message,
+    test_share_your_story_page_loads_with_consent_checkboxes,
+    test_stories_page_has_share_your_story_cta,
+    test_share_story_api_rejects_invalid_body,
+    test_share_story_api_requires_both_consents,
+    test_share_story_api_returns_503_when_not_configured,
     test_cta_strategy_primary_ctas_present,
     test_signature_statements_placed_on_other_pages,
     test_stories_heading_uses_full_three_part_statement,
