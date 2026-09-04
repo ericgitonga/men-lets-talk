@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.30.0] - 2026-09-05
+
+### Added
+
+- `scripts/delete-test-artifacts.mjs` (closes #100, `npm run cleanup:test-data`): deletes every
+  Sanity document flagged `testArtifact: true` (mlt-cms#25's new QA-only Studio checkbox on
+  subscriber/story/registration). Dry-run by default, `--yes` to actually delete. Companion to
+  manually verifying a Sanity-backed write path against production, which otherwise leaves real
+  documents behind — found 12 stray draft "Anonymous" stories and 23 stray `test@example.com`
+  subscribers accumulated this way.
+
 ## [0.29.0] - 2026-09-04
 
 ### Added
