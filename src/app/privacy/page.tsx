@@ -1,5 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumb";
-import { WHATSAPP_URL, WHATSAPP_NUMBER } from "@/lib/contactInfo";
+import { WHATSAPP_URL, WHATSAPP_NUMBER, EMAIL, EMAIL_URL } from "@/lib/contactInfo";
 
 export const metadata = {
   title: "Privacy Notice | Men Let's Talk",
@@ -24,6 +24,10 @@ export default function PrivacyPage() {
           on{" "}
           <a href={WHATSAPP_URL} className="underline">
             WhatsApp ({WHATSAPP_NUMBER})
+          </a>{" "}
+          or by email at{" "}
+          <a href={EMAIL_URL} className="underline">
+            {EMAIL}
           </a>{" "}
           with any question about your data.
         </p>

@@ -338,7 +338,7 @@ def test_whatsapp_button_present_on_every_page():
             page.goto(path)
             button = page.get_by_test_id("whatsapp-button")
             assert button.is_visible()
-            assert button.get_attribute("href") == "https://wa.me/254720450565"
+            assert button.get_attribute("href") == "https://wa.me/254727246599"
 
 
 def test_search_prompts_when_no_query():
