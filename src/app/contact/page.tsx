@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ContactForm } from "./ContactForm";
-import { WHATSAPP_NUMBER, WHATSAPP_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contactInfo";
+import { WHATSAPP_NUMBER, WHATSAPP_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL, EMAIL, EMAIL_URL } from "@/lib/contactInfo";
 
 export const metadata = {
   title: "Let's Talk. | Men Let's Talk",
@@ -25,6 +25,12 @@ export default function ContactPage() {
           Instagram:{" "}
           <a href={INSTAGRAM_URL} className="underline">
             @{INSTAGRAM_HANDLE}
+          </a>
+        </p>
+        <p>
+          Email:{" "}
+          <a href={EMAIL_URL} className="underline">
+            {EMAIL}
           </a>
         </p>
       </div>

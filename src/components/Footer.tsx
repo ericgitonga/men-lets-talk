@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { WHATSAPP_NUMBER, WHATSAPP_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/contactInfo";
+import { WHATSAPP_NUMBER, WHATSAPP_URL, INSTAGRAM_HANDLE, INSTAGRAM_URL, EMAIL, EMAIL_URL } from "@/lib/contactInfo";
 
 export function Footer() {
   return (
@@ -16,6 +16,9 @@ export function Footer() {
             </a>
             <a href={INSTAGRAM_URL} className="hover:underline">
               Instagram: @{INSTAGRAM_HANDLE}
+            </a>
+            <a href={EMAIL_URL} className="hover:underline">
+              Email: {EMAIL}
             </a>
             <Link href="/privacy" className="hover:underline">
               Privacy

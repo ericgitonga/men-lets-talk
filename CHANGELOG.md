@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.32.2] - 2026-09-07
+
+### Changed
+
+- Updated WhatsApp contact number to +254727246599, replacing +254720450565 (closes #113).
+- Added `info@menletstalk.co.ke` as a contact email, shown on the Contact page, site footer,
+  and Privacy Notice — previously omitted since none had been supplied (closes #113).
+
 ## [0.32.1] - 2026-09-05
 
 ### Security
