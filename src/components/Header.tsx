@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/community", label: "Community" },
   { href: "/resources", label: "Resources" },
   { href: "/stories", label: "Stories" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/get-involved", label: "Get Involved" },
 ];
 

@@ -527,6 +527,26 @@ def test_books_page_loads():
         assert page.get_by_test_id("books-empty-state").is_visible()
 
 
+def test_gallery_page_loads():
+    with browser_page() as page:
+        resp = page.goto("/gallery")
+        assert resp.status == 200
+        assert page.get_by_test_id("gallery-empty-state").is_visible()
+
+
+def test_desktop_nav_has_gallery_between_stories_and_get_involved():
+    with browser_page() as page:
+        page.goto("/")
+        nav = page.get_by_test_id("desktop-nav")
+        labels = nav.get_by_role("link").all_text_contents()
+        stories_index = labels.index("Stories")
+        get_involved_index = labels.index("Get Involved")
+        assert labels[stories_index + 1] == "Gallery"
+        assert get_involved_index == stories_index + 2
+        nav.get_by_role("link", name="Gallery", exact=True).click()
+        page.wait_for_url("**/gallery")
+
+
 TESTS = [
     test_homepage_loads,
     test_hero_carries_brief_supporting_message,
@@ -579,6 +599,8 @@ TESTS = [
     test_partners_page_loads,
     test_community_page_loads,
     test_books_page_loads,
+    test_gallery_page_loads,
+    test_desktop_nav_has_gallery_between_stories_and_get_involved,
 ]
 
 if __name__ == "__main__":

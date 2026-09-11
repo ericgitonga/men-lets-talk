@@ -274,6 +274,20 @@ export type SanitySiteSettings = {
   values?: { name: string; description: string }[] | null;
 };
 
+export const GALLERY_QUERY = /* groq */ `
+  *[_type == "galleryImage"] | order(publishedAt desc) {
+    _id,
+    image,
+    caption
+  }
+`;
+
+export type SanityGalleryImage = {
+  _id: string;
+  image: { asset?: { _ref: string } } | null;
+  caption?: string | null;
+};
+
 // Matches mlt-cms's schemaTypes/shared/topics.ts — duplicated here since this repo doesn't
 // depend on that one; keep the two in sync by hand if the taxonomy changes.
 export const TOPIC_LABELS: Record<string, string> = {
