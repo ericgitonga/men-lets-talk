@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.33.0] - 2026-09-11
+
+### Added
+
+- Gallery section (closes #115): new `/gallery` page showing a photo grid from `mlt-cms`'s new
+  `galleryImage` content type (`mlt-cms#33`), newest-first, with the same empty-state pattern as
+  `/stories` when there's no content yet. New "Gallery" nav item between "Stories" and "Get
+  Involved" in both the desktop and mobile nav.
+
 ## [0.32.2] - 2026-09-07
 
 ### Changed
