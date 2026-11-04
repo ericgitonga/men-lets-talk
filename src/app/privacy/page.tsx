@@ -37,6 +37,10 @@ export default function PrivacyPage() {
         <h2 className="text-xl font-bold">What we collect, and why</h2>
         <ul className="mt-3 list-disc space-y-3 pl-5 text-neutral-700">
           <li>
+            <strong>Contact enquiries</strong> — your name, email, phone (optional), topic, and
+            message, sent directly to our team&apos;s email inbox so we can reply to you.
+          </li>
+          <li>
             <strong>Event registration</strong> — your name, email, and phone (optional), so we
             can confirm your place and reach you about the event.
           </li>
@@ -56,10 +60,12 @@ export default function PrivacyPage() {
       <section className="mt-10">
         <h2 className="text-xl font-bold">Who else sees it</h2>
         <p className="mt-3 text-neutral-700">
-          We use Sanity to store this information and Vercel to host this website. Both are
-          based outside Kenya, so your information is processed abroad as part of running this
-          site — we rely on their standard data-processing terms as a safeguard for that
-          transfer. We don&apos;t sell your data or share it with anyone else.
+          We use Sanity to store event registrations, subscriptions, and stories, our email
+          provider to deliver contact form enquiries to our team inbox, and Vercel to host this
+          website. Because these infrastructure providers operate outside Kenya, your information
+          is processed abroad as part of running this site — we rely on their standard
+          data-processing terms as a safeguard for that transfer. We don&apos;t sell your data or
+          share it with anyone else.
         </p>
       </section>
 
