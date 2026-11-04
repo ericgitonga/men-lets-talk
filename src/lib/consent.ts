@@ -6,3 +6,4 @@
 export const STORY_CONSENT_VERSION = "story-consent-v2";
 export const REGISTRATION_CONSENT_VERSION = "registration-consent-v2";
 export const SUBSCRIBE_CONSENT_VERSION = "subscribe-consent-v2";
+export const CONTACT_CONSENT_VERSION = "contact-consent-v1";

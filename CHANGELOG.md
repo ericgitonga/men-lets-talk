@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.34.0] - 2026-11-04
+
+### Added
+
+- Real SMTP email delivery for the Contact form (closes #66): new `/api/contact` route using
+  `nodemailer` (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, and
+  `CONTACT_RECIPIENT_EMAIL` defaulting to `info@menletstalk.co.ke`), wired into `ContactForm.tsx`
+  with a required Kenya DPA 2019 consent checkbox (`CONTACT_CONSENT_VERSION`), updated
+  `/privacy` notice disclosure, and 7-layer anti-spam protection (`src/lib/contactSpam.ts` —
+  disguised `website` honeypot, HMAC-SHA256 signed timestamp time-trap + single-use replay lock,
+  client-side human interaction proof token, heuristic URL/domain/scam/shouting/CamelCase filter,
+  per-IP and global rate limiting, `Reply-To` header sanitization, and `CONTACT_SIMULATE_EMAILS`
+  preview sandbox support).
+  tag: `v0.34.0`
+
 ## [0.33.0] - 2026-09-11
 
 ### Added
