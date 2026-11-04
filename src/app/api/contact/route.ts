@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { CONTACT_CONSENT_VERSION } from "@/lib/consent";
 import { EMAIL } from "@/lib/contactInfo";
 import {
   createContactChallenge,
@@ -45,7 +44,6 @@ export async function POST(request: Request) {
     phone,
     topic,
     message,
-    consentGiven,
     website,
     ts,
     seed,
@@ -67,9 +65,6 @@ export async function POST(request: Request) {
   }
   if (typeof message !== "string" || !message.trim() || message.trim().length > MESSAGE_MAX) {
     return NextResponse.json({ error: "Message is required." }, { status: 400 });
-  }
-  if (consentGiven !== true) {
-    return NextResponse.json({ error: "Consent is required." }, { status: 400 });
   }
 
   const simulateEmails = process.env.CONTACT_SIMULATE_EMAILS === "yes";
@@ -124,14 +119,12 @@ export async function POST(request: Request) {
 
   // Layer 6 — Sanitize display name in Reply-To header to prevent header injection.
   const safeReplyName = sanitizeReplyToName(trimmedName);
-  const now = new Date().toISOString();
   const mailSubject = `[Men Let's Talk] ${trimmedTopic || `New message from ${safeReplyName}`}`;
   const mailText = [
     `Name: ${trimmedName}`,
     `Email: ${trimmedEmail}`,
     `Phone: ${trimmedPhone || "Not provided"}`,
     `Topic: ${trimmedTopic || "Not specified"}`,
-    `Consent: ${CONTACT_CONSENT_VERSION} (${now})`,
     "",
     "Message:",
     trimmedMessage,

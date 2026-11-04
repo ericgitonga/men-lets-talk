@@ -67,7 +67,7 @@ def test_privacy_page_loads():
 def test_contact_page_links_to_privacy():
     with browser_page() as page:
         page.goto("/contact")
-        page.get_by_role("link", name="Privacy Notice", exact=True).first.click()
+        page.get_by_role("link", name="Privacy Notice", exact=True).click()
         page.wait_for_url("**/privacy")
 
 
@@ -366,29 +366,9 @@ def test_header_has_search_link():
         page.wait_for_url("**/search")
 
 
-def test_contact_form_has_required_consent_checkbox():
-    with browser_page() as page:
-        page.goto("/contact")
-        consent = page.get_by_test_id("contact-form").locator('input[name="consentGiven"]')
-        assert consent.get_attribute("required") is not None
-
-
 def test_contact_api_rejects_invalid_body():
     with browser_page() as page:
         resp = page.request.post(f"{BASE_URL}/api/contact", data={"name": "Test"})
-        assert resp.status == 400
-
-
-def test_contact_api_requires_consent():
-    with browser_page() as page:
-        resp = page.request.post(
-            f"{BASE_URL}/api/contact",
-            data={
-                "name": "Test User",
-                "email": "test@example.com",
-                "message": "This is a test message.",
-            },
-        )
         assert resp.status == 400
 
 
@@ -402,7 +382,6 @@ def test_contact_api_returns_503_when_not_configured():
                 "name": "Test User",
                 "email": "test@example.com",
                 "message": "This is a test message.",
-                "consentGiven": True,
             },
         )
         assert resp.status == 503
@@ -416,7 +395,6 @@ def test_contact_form_submit_shows_confirmation():
                 assert payload["name"] == "Test User"
                 assert payload["email"] == "test@example.com"
                 assert payload["message"] == "This is a test message."
-                assert payload["consentGiven"] is True
                 route.fulfill(status=200, content_type="application/json", body='{"ok":true}')
             else:
                 route.continue_()
@@ -426,7 +404,6 @@ def test_contact_form_submit_shows_confirmation():
         page.get_by_label("Name").fill("Test User")
         page.get_by_label("Email").fill("test@example.com")
         page.get_by_label("Message").fill("This is a test message.")
-        page.get_by_test_id("contact-form").locator('input[name="consentGiven"]').check()
         page.get_by_role("button", name="Send", exact=True).click()
         submitted = page.get_by_test_id("contact-form-submitted")
         submitted.wait_for()
@@ -638,9 +615,7 @@ TESTS = [
     test_search_prompts_when_no_query,
     test_search_shows_empty_state_when_no_results,
     test_header_has_search_link,
-    test_contact_form_has_required_consent_checkbox,
     test_contact_api_rejects_invalid_body,
-    test_contact_api_requires_consent,
     test_contact_api_returns_503_when_not_configured,
     test_contact_form_submit_shows_confirmation,
     test_partners_page_has_become_a_partner_cta,

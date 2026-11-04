@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import Link from "next/link";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -65,7 +64,6 @@ export function ContactForm() {
           phone: form.get("phone"),
           topic: form.get("topic"),
           message: form.get("message"),
-          consentGiven: form.get("consentGiven") === "on",
           website: form.get("website"),
           ts: challenge.ts,
           seed: challenge.seed,
@@ -177,18 +175,6 @@ export function ContactForm() {
           className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2"
         />
       </div>
-
-      <label className="flex items-start gap-2 text-sm text-neutral-700">
-        <input type="checkbox" name="consentGiven" required className="mt-1" />
-        <span>
-          I consent to Men Let&apos;s Talk collecting and using this information to respond to my
-          enquiry, as described in our{" "}
-          <Link href="/privacy" className="underline">
-            Privacy Notice
-          </Link>
-          .
-        </span>
-      </label>
 
       {error && (
         <p data-testid="contact-error" className="text-sm text-red-600">
