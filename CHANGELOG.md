@@ -6,6 +6,26 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.35.0] - 2026-11-05
+
+### Added
+
+- Upcoming events *Men's Garage: What's Under the Hood?* (Sunday, 8 November 2026 from 1:00 PM EAT
+  at Junction Mall) and *Son & Father Dinner* (Saturday, 12 December 2026 at Heri Heights Hotel,
+  Kolobot Drive) uploaded to Sanity (`event-mens-garage-2026-11-08`,
+  `event-son-and-father-dinner-2026-12-12`) and bundled as static fallbacks
+  (`public/images/events/mens-garage-flier.jpg`,
+  `public/images/events/son-and-father-dinner-flier.jpg`), with full-frame portrait flier
+  rendering on `/events` and the homepage Upcoming Events section so QR codes and header/footer
+  copy are never cropped (closes #121).
+- 17 real Men Let's Talk event, conversation circle, and biker brotherhood photographs uploaded
+  to Sanity (`gallery-image-01` … `gallery-image-17`) and bundled under
+  `public/images/gallery/gallery-01.jpg` … `gallery-17.jpg` with full-image preview links and no
+  caption overlays on `/gallery` (closes #121).
+- Dedicated "Inside Men Let's Talk" video section (`data-testid="about-video-section"`) on
+  `/about` playing `public/videos/about-men-lets-talk.mp4` directly below Our Story (closes #121).
+  tag: `v0.35.0`
+
 ## [0.34.0] - 2026-11-04
 
 ### Added

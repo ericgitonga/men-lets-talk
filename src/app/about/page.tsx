@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumb";
 import aboutBrotherhood from "@/assets/community/about-brotherhood.jpg";
+import { ABOUT_VIDEO_SRC } from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { SITE_SETTINGS_QUERY, type SanitySiteSettings } from "@/sanity/lib/queries";
@@ -79,6 +80,25 @@ export default async function AboutPage() {
           conversations, breakfasts and retreats where men show up for each other, season after
           season.
         </p>
+      </section>
+
+      <section data-testid="about-video-section" className="mt-10">
+        <h2 className="text-2xl font-bold">Inside Men Let&apos;s Talk</h2>
+        <p className="mt-2 text-neutral-600">
+          See how men gather, listen and walk alongside one another in our conversations and
+          community spaces.
+        </p>
+        <div className="mt-4 overflow-hidden rounded-lg bg-neutral-900">
+          <video
+            data-testid="about-video"
+            controls
+            preload="metadata"
+            className=" aspect-video w-full"
+          >
+            <source src={ABOUT_VIDEO_SRC} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </section>
 
       <section data-testid="our-why-section" className="mt-10">
