@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.36.1] - 2026-11-05
+
+### Changed
+
+- Updated the *"The Conversation Is Growing"* copy on `/community` to reflect that different
+  chapters meet on different days — Nakuru on Tuesdays and Nairobi on Thursdays — alongside
+  growing circles in Kampala and beyond (closes #127).
+  tag: `v0.36.1`
+
 ## [0.36.0] - 2026-11-05
 
 ### Added

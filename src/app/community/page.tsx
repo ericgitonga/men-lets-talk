@@ -49,8 +49,9 @@ export default async function CommunityPage() {
       <section data-testid="community-video-section" className="mt-10">
         <h2 className="text-2xl font-bold">The Conversation Is Growing</h2>
         <p className="mt-2 text-neutral-600">
-          Every Tuesday, men gather across Nairobi, Nakuru, Kampala and beyond to share honestly,
-          connect and walk alongside one another.
+          Different chapters meet on different days of the week — Nakuru gathers on Tuesdays,
+          Nairobi gathers on Thursdays, and new circles are growing across Kampala and beyond so
+          men can share honestly, connect and walk alongside one another.
         </p>
         <div className="mx-auto mt-4 max-w-md overflow-hidden rounded-lg bg-neutral-900">
           <video
