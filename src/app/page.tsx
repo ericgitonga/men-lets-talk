@@ -3,6 +3,7 @@ import Link from "next/link";
 import heroImage from "@/assets/hero-men-talking.jpg";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { RegisterForm } from "@/components/RegisterForm";
+import { FALLBACK_EVENTS, filterUpcomingEvents } from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
@@ -73,16 +74,14 @@ const FALLBACK_COMMUNITY_FEATURES = [
 // same EVENTS_QUERY as the /events page (already ordered soonest-first) rather than a near-
 // duplicate GROQ string, since the only difference is how many of the result are shown.
 async function getUpcomingEvents(): Promise<SanityEvent[]> {
-  // No token configured (e.g. CI, which runs with zero cloud credentials — see
-  // ONBOARDING.md) — treat as "no events" rather than attempting an unauthenticated
-  // request against the private dataset.
-  if (!readToken) return [];
+  if (!readToken) return filterUpcomingEvents(FALLBACK_EVENTS);
 
   try {
-    return await client.fetch(EVENTS_QUERY);
+    const events = await client.fetch<SanityEvent[]>(EVENTS_QUERY);
+    return events.length > 0 ? events : filterUpcomingEvents(FALLBACK_EVENTS);
   } catch (error) {
     console.error("Failed to fetch events from Sanity:", error);
-    return [];
+    return filterUpcomingEvents(FALLBACK_EVENTS);
   }
 }
 
@@ -245,34 +244,39 @@ export default async function Home() {
         <section data-testid="home-events-section" className="mx-auto max-w-5xl px-6 py-20">
           <h2 className="text-center text-3xl font-bold">Upcoming Events</h2>
           <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {upcomingEvents.map((event) => (
-              <div key={event._id} className="rounded-lg border border-neutral-200 p-6">
-                {event.image && (
-                  <Image
-                    src={urlForImage(event.image).width(400).height(225).url()}
-                    alt={event.name}
-                    width={400}
-                    height={225}
-                    className="mb-4 rounded-lg object-cover"
-                  />
-                )}
-                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
-                  {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
-                </p>
-                <h3 className="mt-1 text-lg font-semibold">{event.name}</h3>
-                <p className="mt-1 text-sm text-neutral-600">
-                  {new Date(event.date).toLocaleDateString("en-KE", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}{" "}
-                  &middot; {event.location}
-                </p>
-                <p className="mt-3 text-sm">{event.description}</p>
-                {event.registrationOpen && <RegisterForm eventId={event._id} eventName={event.name} />}
-              </div>
-            ))}
+            {upcomingEvents.map((event) => {
+              const imgSrc = event.image
+                ? urlForImage(event.image).width(1200).url()
+                : event.imageUrl || null;
+              return (
+                <div key={event._id} className="rounded-lg border border-neutral-200 p-6">
+                  {imgSrc && (
+                    <Image
+                      src={imgSrc}
+                      alt={event.name}
+                      width={1200}
+                      height={1600}
+                      className="mb-4 h-auto w-full rounded-lg"
+                    />
+                  )}
+                  <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+                    {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
+                  </p>
+                  <h3 className="mt-1 text-lg font-semibold">{event.name}</h3>
+                  <p className="mt-1 text-sm text-neutral-600">
+                    {new Date(event.date).toLocaleDateString("en-KE", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}{" "}
+                    &middot; {event.location}
+                  </p>
+                  <p className="mt-3 text-sm">{event.description}</p>
+                  {event.registrationOpen && <RegisterForm eventId={event._id} eventName={event.name} />}
+                </div>
+              );
+            })}
           </div>
           <div className="mt-10 text-center">
             <Link

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumb";
+import { FALLBACK_GALLERY_IMAGES } from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
@@ -13,16 +14,14 @@ export const metadata = {
 };
 
 async function getGalleryImages(): Promise<SanityGalleryImage[]> {
-  // No token configured (e.g. CI, which runs with zero cloud credentials — see
-  // ONBOARDING.md) — treat as "no photos" rather than attempting an unauthenticated
-  // request against the private dataset.
-  if (!readToken) return [];
+  if (!readToken) return FALLBACK_GALLERY_IMAGES;
 
   try {
-    return await client.fetch(GALLERY_QUERY);
+    const images = await client.fetch<SanityGalleryImage[]>(GALLERY_QUERY);
+    return images.length > 0 ? images : FALLBACK_GALLERY_IMAGES;
   } catch (error) {
     console.error("Failed to fetch gallery images from Sanity:", error);
-    return [];
+    return FALLBACK_GALLERY_IMAGES;
   }
 }
 
@@ -49,27 +48,37 @@ export default async function GalleryPage() {
           data-testid="gallery-grid"
           className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
         >
-          {images.map((photo) => (
-            <figure
-              key={photo._id}
-              data-testid="gallery-item"
-              className="relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
-            >
-              {photo.image && (
-                <Image
-                  src={urlForImage(photo.image).width(600).height(600).url()}
-                  alt={photo.caption || "Photo from a Men Let's Talk event"}
-                  fill
-                  className="object-cover"
-                />
-              )}
-              {photo.caption && (
-                <figcaption className="absolute inset-x-0 bottom-0 bg-neutral-900/60 px-2 py-1 text-xs text-white">
-                  {photo.caption}
-                </figcaption>
-              )}
-            </figure>
-          ))}
+          {images.map((photo) => {
+            const thumbUrl = photo.image
+              ? urlForImage(photo.image).width(600).height(600).url()
+              : photo.imageUrl || null;
+            const fullUrl = photo.image
+              ? urlForImage(photo.image).width(1600).fit("max").url()
+              : photo.imageUrl || null;
+            return (
+              <figure
+                key={photo._id}
+                data-testid="gallery-item"
+                className="group relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
+              >
+                {thumbUrl && fullUrl && (
+                  <a
+                    href={fullUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block h-full w-full"
+                  >
+                    <Image
+                      src={thumbUrl}
+                      alt={photo.caption || "Photo from a Men Let's Talk event"}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </a>
+                )}
+              </figure>
+            );
+          })}
         </div>
       )}
     </main>

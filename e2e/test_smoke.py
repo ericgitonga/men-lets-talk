@@ -194,14 +194,16 @@ def test_homepage_find_your_space_section_always_renders():
 
 
 def test_homepage_hides_events_section_when_no_events():
-    # No token in CI (zero cloud credentials — see ONBOARDING.md), so the homepage upcoming-
-    # events teaser (#7 UPCOMING EVENTS) always has nothing to show here. Assert it degrades by
-    # not rendering at all, same reasoning as the stories preview. The real path (a real event
-    # rendering as a card with a working Register button) is verified manually before merging,
-    # same as the other Sanity-backed features.
+    # Homepage upcoming-events section mirrors /events: visible when upcoming events exist,
+    # hidden entirely (rather than showing an empty state) when no upcoming events remain.
     with browser_page() as page:
+        page.goto("/events")
+        has_upcoming = page.get_by_test_id("events-list").count() > 0
         page.goto("/")
-        assert page.get_by_test_id("home-events-section").count() == 0
+        if has_upcoming:
+            assert page.get_by_test_id("home-events-section").is_visible()
+        else:
+            assert page.get_by_test_id("home-events-section").count() == 0
 
 
 def test_homepage_hides_stories_preview_when_no_stories():
@@ -491,6 +493,8 @@ def test_about_page_loads():
         resp = page.goto("/about")
         assert resp.status == 200
         assert page.get_by_test_id("our-story-section").is_visible()
+        assert page.get_by_test_id("about-video-section").is_visible()
+        assert page.get_by_test_id("about-video").is_visible()
         assert page.get_by_test_id("our-values-section").is_visible()
 
 
@@ -502,15 +506,12 @@ def test_health_endpoint():
 
 
 def test_events_page_loads():
-    # No SANITY_API_READ_TOKEN in CI (this repo's CI runs with zero cloud credentials — see
-    # ONBOARDING.md), so the page always renders its empty state here. No event content is
-    # asserted — that would mean hardcoding CMS-driven data into a test, which this repo's
-    # convention rules out. This only checks the page loads and degrades gracefully rather
-    # than erroring when Sanity isn't reachable/configured.
     with browser_page() as page:
         resp = page.goto("/events")
         assert resp.status == 200
-        assert page.get_by_test_id("events-empty-state").is_visible()
+        has_list = page.get_by_test_id("events-list").count() > 0
+        has_empty = page.get_by_test_id("events-empty-state").count() > 0
+        assert has_list or has_empty
 
 
 def test_resources_page_loads():
@@ -563,7 +564,8 @@ def test_gallery_page_loads():
     with browser_page() as page:
         resp = page.goto("/gallery")
         assert resp.status == 200
-        assert page.get_by_test_id("gallery-empty-state").is_visible()
+        assert page.get_by_test_id("gallery-grid").is_visible()
+        assert page.get_by_test_id("gallery-item").count() >= 17
 
 
 def test_desktop_nav_has_gallery_between_stories_and_get_involved():

@@ -25,6 +25,7 @@ export type SanityEvent = {
   category: string;
   description: string;
   image?: { asset?: { _ref: string } } | null;
+  imageUrl?: string | null;
   registrationOpen: boolean;
 };
 
@@ -285,6 +286,7 @@ export const GALLERY_QUERY = /* groq */ `
 export type SanityGalleryImage = {
   _id: string;
   image: { asset?: { _ref: string } } | null;
+  imageUrl?: string | null;
   caption?: string | null;
 };
 
