@@ -1,6 +1,7 @@
 import type { SanityEvent, SanityGalleryImage } from "@/sanity/lib/queries";
 
 export const ABOUT_VIDEO_SRC = "/videos/about-men-lets-talk.mp4";
+export const ODEK_VIDEO_SRC = "/videos/odek-the-conversation-is-growing.mp4";
 
 export const FALLBACK_EVENTS: SanityEvent[] = [
   {
@@ -44,6 +45,18 @@ const GALLERY_IMAGE_NUMBERS = [
   "10",
   "11",
   "13",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+  "24",
+  "25",
+  "26",
+  "27",
+  "28",
+  "29",
 ];
 
 export const FALLBACK_GALLERY_IMAGES: SanityGalleryImage[] =
@@ -53,6 +66,37 @@ export const FALLBACK_GALLERY_IMAGES: SanityGalleryImage[] =
     imageUrl: `/images/gallery/gallery-${num}.jpg`,
     caption: null,
   }));
+
+export function deduplicateGalleryImages(
+  images: SanityGalleryImage[],
+): SanityGalleryImage[] {
+  const seenIds = new Set<string>();
+  const seenUrls = new Set<string>();
+  const unique: SanityGalleryImage[] = [];
+
+  for (const item of images) {
+    const id = item._id;
+    const assetRef =
+      item.image &&
+      typeof item.image === "object" &&
+      "asset" in item.image &&
+      item.image.asset &&
+      typeof item.image.asset === "object" &&
+      "_ref" in item.image.asset
+        ? String(item.image.asset._ref)
+        : null;
+    const urlKey = assetRef || item.imageUrl || id;
+
+    if (seenIds.has(id) || seenUrls.has(urlKey)) {
+      continue;
+    }
+    seenIds.add(id);
+    seenUrls.add(urlKey);
+    unique.push(item);
+  }
+
+  return unique;
+}
 
 export function filterUpcomingEvents(events: SanityEvent[]): SanityEvent[] {
   const nowMs = Date.now();

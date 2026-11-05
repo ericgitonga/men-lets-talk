@@ -550,6 +550,8 @@ def test_community_page_loads():
     with browser_page() as page:
         resp = page.goto("/community")
         assert resp.status == 200
+        assert page.get_by_test_id("community-video-section").is_visible()
+        assert page.get_by_test_id("community-video").is_visible()
         assert page.get_by_test_id("community-empty-state").is_visible()
 
 
@@ -565,7 +567,7 @@ def test_gallery_page_loads():
         resp = page.goto("/gallery")
         assert resp.status == 200
         assert page.get_by_test_id("gallery-grid").is_visible()
-        assert page.get_by_test_id("gallery-item").count() == 12
+        assert page.get_by_test_id("gallery-item").count() == 24
 
 
 def test_desktop_nav_has_gallery_between_stories_and_get_involved():

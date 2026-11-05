@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumb";
-import { FALLBACK_GALLERY_IMAGES } from "@/lib/defaultMedia";
+import {
+  FALLBACK_GALLERY_IMAGES,
+  deduplicateGalleryImages,
+} from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
@@ -18,7 +21,9 @@ async function getGalleryImages(): Promise<SanityGalleryImage[]> {
 
   try {
     const images = await client.fetch<SanityGalleryImage[]>(GALLERY_QUERY);
-    return images.length > 0 ? images : FALLBACK_GALLERY_IMAGES;
+    return deduplicateGalleryImages(
+      images.length > 0 ? images : FALLBACK_GALLERY_IMAGES,
+    );
   } catch (error) {
     console.error("Failed to fetch gallery images from Sanity:", error);
     return FALLBACK_GALLERY_IMAGES;

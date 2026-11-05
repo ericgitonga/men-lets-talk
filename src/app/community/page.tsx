@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
+import { ODEK_VIDEO_SRC } from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
@@ -44,6 +45,25 @@ export default async function CommunityPage() {
         Not every man needs the same kind of community — a space where men support one another
         through life&apos;s different seasons.
       </p>
+
+      <section data-testid="community-video-section" className="mt-10">
+        <h2 className="text-2xl font-bold">The Conversation Is Growing</h2>
+        <p className="mt-2 text-neutral-600">
+          Every Tuesday, men gather across Nairobi, Nakuru, Kampala and beyond to share honestly,
+          connect and walk alongside one another.
+        </p>
+        <div className="mx-auto mt-4 max-w-md overflow-hidden rounded-lg bg-neutral-900">
+          <video
+            data-testid="community-video"
+            controls
+            preload="metadata"
+            className="h-auto w-full"
+          >
+            <source src={ODEK_VIDEO_SRC} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </section>
 
       {groups.length === 0 ? (
         <p data-testid="community-empty-state" className="mt-8 text-neutral-600">
