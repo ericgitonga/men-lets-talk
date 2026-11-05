@@ -565,7 +565,7 @@ def test_gallery_page_loads():
         resp = page.goto("/gallery")
         assert resp.status == 200
         assert page.get_by_test_id("gallery-grid").is_visible()
-        assert page.get_by_test_id("gallery-item").count() >= 17
+        assert page.get_by_test_id("gallery-item").count() == 12
 
 
 def test_desktop_nav_has_gallery_between_stories_and_get_involved():

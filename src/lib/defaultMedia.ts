@@ -31,18 +31,28 @@ export const FALLBACK_EVENTS: SanityEvent[] = [
   },
 ];
 
-export const FALLBACK_GALLERY_IMAGES: SanityGalleryImage[] = Array.from(
-  { length: 17 },
-  (_, idx) => {
-    const num = String(idx + 1).padStart(2, "0");
-    return {
-      _id: `gallery-image-${num}`,
-      image: null,
-      imageUrl: `/images/gallery/gallery-${num}.jpg`,
-      caption: null,
-    };
-  },
-);
+const GALLERY_IMAGE_NUMBERS = [
+  "01",
+  "02",
+  "03",
+  "04",
+  "05",
+  "06",
+  "07",
+  "08",
+  "09",
+  "10",
+  "11",
+  "13",
+];
+
+export const FALLBACK_GALLERY_IMAGES: SanityGalleryImage[] =
+  GALLERY_IMAGE_NUMBERS.map((num) => ({
+    _id: `gallery-image-${num}`,
+    image: null,
+    imageUrl: `/images/gallery/gallery-${num}.jpg`,
+    caption: null,
+  }));
 
 export function filterUpcomingEvents(events: SanityEvent[]): SanityEvent[] {
   const nowMs = Date.now();
