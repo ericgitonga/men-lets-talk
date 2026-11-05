@@ -6,6 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.35.1] - 2026-11-05
+
+### Removed
+
+- Removed the 5 biker/motorcycle photographs (`gallery-image-12`, `gallery-image-14`,
+  `gallery-image-15`, `gallery-image-16`, `gallery-image-17`) from the Sanity `production`
+  dataset and static gallery fallback list per client feedback, retaining the 12 Men Let's Talk
+  conversation-circle photographs on `/gallery` (closes #123).
+  tag: `v0.35.1`
+
 ## [0.35.0] - 2026-11-05
 
 ### Added

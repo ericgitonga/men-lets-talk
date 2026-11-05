@@ -7,9 +7,9 @@ import {
 } from "./defaultMedia";
 
 describe("defaultMedia", () => {
-  it("defines the About video path and 17 fallback gallery photos", () => {
+  it("defines the About video path and 12 fallback gallery photos", () => {
     expect(ABOUT_VIDEO_SRC).toBe("/videos/about-men-lets-talk.mp4");
-    expect(FALLBACK_GALLERY_IMAGES).toHaveLength(17);
+    expect(FALLBACK_GALLERY_IMAGES).toHaveLength(12);
     for (const img of FALLBACK_GALLERY_IMAGES) {
       expect(img.imageUrl).toMatch(/^\/images\/gallery\/gallery-\d{2}\.jpg$/);
       expect(img.caption).toBeNull();
