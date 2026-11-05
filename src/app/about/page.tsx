@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumb";
 import aboutBrotherhood from "@/assets/community/about-brotherhood.jpg";
-import { ABOUT_VIDEO_SRC } from "@/lib/defaultMedia";
+import { ABOUT_VIDEO_SRC, ODEK_VIDEO_SRC } from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { SITE_SETTINGS_QUERY, type SanitySiteSettings } from "@/sanity/lib/queries";
@@ -86,18 +86,31 @@ export default async function AboutPage() {
         <h2 className="text-2xl font-bold">Inside Men Let&apos;s Talk</h2>
         <p className="mt-2 text-neutral-600">
           See how men gather, listen and walk alongside one another in our conversations and
-          community spaces.
+          community spaces across Nairobi, Nakuru, Kampala and beyond.
         </p>
-        <div className="mt-4 overflow-hidden rounded-lg bg-neutral-900">
-          <video
-            data-testid="about-video"
-            controls
-            preload="metadata"
-            className=" aspect-video w-full"
-          >
-            <source src={ABOUT_VIDEO_SRC} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+        <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="overflow-hidden rounded-lg bg-neutral-900">
+            <video
+              data-testid="about-video"
+              controls
+              preload="metadata"
+              className="aspect-video w-full"
+            >
+              <source src={ABOUT_VIDEO_SRC} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div className="overflow-hidden rounded-lg bg-neutral-900">
+            <video
+              data-testid="about-odek-video"
+              controls
+              preload="metadata"
+              className="h-auto w-full"
+            >
+              <source src={ODEK_VIDEO_SRC} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       </section>
 

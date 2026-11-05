@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.36.0] - 2026-11-05
+
+### Added
+
+- Added 12 new Men Let's Talk conversation-circle photographs (`gallery-18.jpg` through
+  `gallery-29.jpg`, Sanity IDs `gallery-image-18` through `gallery-image-29`) to both the Sanity
+  `production` dataset and static gallery fallbacks (`public/images/gallery/`), bringing the
+  gallery to 24 unique photographs with runtime deduplication via `deduplicateGalleryImages()`
+  (closes #125).
+- Added web-optimised chapter-growth video `public/videos/odek-the-conversation-is-growing.mp4`
+  (*"The Conversation Is Growing — Nairobi • Nakuru • Kampala"*) in a dedicated
+  `data-testid="community-video-section"` section on `/community` (*Find Your Space*) and
+  alongside the overview video in *"Inside Men Let's Talk"* on `/about` (closes #125).
+  tag: `v0.36.0`
+
 ## [0.35.1] - 2026-11-05
 
 ### Removed
