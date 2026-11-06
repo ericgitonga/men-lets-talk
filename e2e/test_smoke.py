@@ -495,6 +495,7 @@ def test_about_page_loads():
         assert page.get_by_test_id("our-story-section").is_visible()
         assert page.get_by_test_id("about-video-section").is_visible()
         assert page.get_by_test_id("about-video").is_visible()
+        assert page.get_by_test_id("about-odek-video").count() == 0
         assert page.get_by_test_id("our-values-section").is_visible()
 
 

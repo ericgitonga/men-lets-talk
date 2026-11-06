@@ -6,6 +6,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.36.2] - 2026-11-06
+
+### Removed
+
+- Removed the vertical-format video (`odek-the-conversation-is-growing.mp4`) from `/about` so the
+  landscape overview video (`about-men-lets-talk.mp4`) renders at full 16:9 width, leaving the
+  vertical video exclusively on `/community` (closes #129).
+  tag: `v0.36.2`
+
 ## [0.36.1] - 2026-11-05
 
 ### Changed
