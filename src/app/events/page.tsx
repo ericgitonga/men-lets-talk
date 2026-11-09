@@ -1,12 +1,17 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Image from "next/image";
 import { RegisterForm } from "@/components/RegisterForm";
-import { FALLBACK_EVENTS, filterUpcomingEvents } from "@/lib/defaultMedia";
+import {
+  FALLBACK_EVENTS,
+  filterPastEvents,
+  filterUpcomingEvents,
+} from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
 import { urlForImage } from "@/sanity/lib/image";
 import {
   EVENTS_QUERY,
+  PAST_EVENTS_QUERY,
   EVENT_CATEGORY_LABELS,
   type SanityEvent,
 } from "@/sanity/lib/queries";
@@ -15,10 +20,10 @@ export const revalidate = 60;
 
 export const metadata = {
   title: "Events | Men Let's Talk",
-  description: "Upcoming Men Let's Talk conversations, breakfasts, and retreats.",
+  description: "Upcoming and past Men Let's Talk conversations, breakfasts, and retreats.",
 };
 
-async function getEvents(): Promise<SanityEvent[]> {
+async function getUpcomingEvents(): Promise<SanityEvent[]> {
   if (!readToken) return filterUpcomingEvents(FALLBACK_EVENTS);
 
   try {
@@ -30,8 +35,23 @@ async function getEvents(): Promise<SanityEvent[]> {
   }
 }
 
+async function getPastEvents(): Promise<SanityEvent[]> {
+  if (!readToken) return filterPastEvents(FALLBACK_EVENTS);
+
+  try {
+    const events = await client.fetch<SanityEvent[]>(PAST_EVENTS_QUERY);
+    return events.length > 0 ? events : filterPastEvents(FALLBACK_EVENTS);
+  } catch (error) {
+    console.error("Failed to fetch past events from Sanity:", error);
+    return filterPastEvents(FALLBACK_EVENTS);
+  }
+}
+
 export default async function EventsPage() {
-  const events = await getEvents();
+  const [events, pastEvents] = await Promise.all([
+    getUpcomingEvents(),
+    getPastEvents(),
+  ]);
 
   return (
     <main data-testid="events-page" className="mx-auto max-w-3xl px-6 py-16">
@@ -81,6 +101,54 @@ export default async function EventsPage() {
             );
           })}
         </ul>
+      )}
+
+      {pastEvents.length > 0 && (
+        <section
+          data-testid="past-events-section"
+          className="mt-16 border-t border-neutral-200 pt-12"
+        >
+          <h2 className="text-2xl font-bold">Past Events</h2>
+          <ul data-testid="past-events-list" className="mt-8 space-y-8">
+            {pastEvents.map((event) => {
+              const imgSrc = event.image
+                ? urlForImage(event.image).width(1200).url()
+                : event.imageUrl || null;
+              return (
+                <li
+                  id={event._id}
+                  key={event._id}
+                  data-testid="past-event-item"
+                  className="scroll-mt-24 border-b border-neutral-200 pb-8"
+                >
+                  {imgSrc && (
+                    <Image
+                      src={imgSrc}
+                      alt={event.name}
+                      width={1200}
+                      height={1600}
+                      className="mb-4 h-auto w-full rounded-lg"
+                    />
+                  )}
+                  <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">
+                    {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
+                  </p>
+                  <h3 className="mt-1 text-xl font-semibold">{event.name}</h3>
+                  <p className="mt-1 text-neutral-600">
+                    {new Date(event.date).toLocaleDateString("en-KE", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}{" "}
+                    &middot; {event.location}
+                  </p>
+                  <p className="mt-3">{event.description}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
     </main>
   );

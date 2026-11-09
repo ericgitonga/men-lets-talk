@@ -15,7 +15,7 @@ export const FALLBACK_EVENTS: SanityEvent[] = [
       "The Junction (All About Men) x Men Let's Talk x JimmiGathu Connects presents Men's Garage: What's Under the Hood? Real conversations. Beyond the surface. Tickets KES 1,000 (KES 500 redeemable). Men-only space till 6 PM; free arcade games, F&B offers & Man Utd vs Aston Villa at 19:30.",
     image: null,
     imageUrl: "/images/events/mens-garage-flier.jpg",
-    registrationOpen: true,
+    registrationOpen: false,
   },
   {
     _id: "event-son-and-father-dinner-2026-12-12",
@@ -31,6 +31,33 @@ export const FALLBACK_EVENTS: SanityEvent[] = [
     registrationOpen: true,
   },
 ];
+
+export type GalleryAlbumSlug = "mens-garage" | "community-gatherings";
+
+export type GalleryAlbumMeta = {
+  slug: GalleryAlbumSlug;
+  title: string;
+  description: string;
+};
+
+export const GALLERY_ALBUMS: GalleryAlbumMeta[] = [
+  {
+    slug: "mens-garage",
+    title: "Men's Garage",
+    description:
+      "Moments from Men's Garage: What's Under the Hood? at Junction Mall.",
+  },
+  {
+    slug: "community-gatherings",
+    title: "Community Gatherings",
+    description:
+      "Moments from Men Let's Talk conversation circles, breakfasts and brotherhood gatherings.",
+  },
+];
+
+const MENS_GARAGE_IMAGE_NUMBERS = Array.from({ length: 64 }, (_, idx) =>
+  String(idx + 1).padStart(2, "0"),
+);
 
 const GALLERY_IMAGE_NUMBERS = [
   "01",
@@ -59,13 +86,50 @@ const GALLERY_IMAGE_NUMBERS = [
   "29",
 ];
 
-export const FALLBACK_GALLERY_IMAGES: SanityGalleryImage[] =
+export const FALLBACK_MENS_GARAGE_IMAGES: SanityGalleryImage[] =
+  MENS_GARAGE_IMAGE_NUMBERS.map((num) => ({
+    _id: `gallery-mens-garage-${num}`,
+    album: "mens-garage",
+    image: null,
+    imageUrl: `/images/gallery/mens-garage/mlt-mg_${num}.jpg`,
+    caption: null,
+  }));
+
+export const FALLBACK_COMMUNITY_GATHERINGS_IMAGES: SanityGalleryImage[] =
   GALLERY_IMAGE_NUMBERS.map((num) => ({
     _id: `gallery-image-${num}`,
+    album: "community-gatherings",
     image: null,
     imageUrl: `/images/gallery/gallery-${num}.jpg`,
     caption: null,
   }));
+
+export const FALLBACK_GALLERY_IMAGES: SanityGalleryImage[] = [
+  ...FALLBACK_MENS_GARAGE_IMAGES,
+  ...FALLBACK_COMMUNITY_GATHERINGS_IMAGES,
+];
+
+export function resolveGalleryAlbum(
+  item: SanityGalleryImage,
+): GalleryAlbumSlug {
+  if (
+    item.album === "mens-garage" ||
+    item._id.startsWith("gallery-mens-garage-") ||
+    item.imageUrl?.includes("/mens-garage/")
+  ) {
+    return "mens-garage";
+  }
+  return "community-gatherings";
+}
+
+export function getGalleryImagesByAlbum(
+  images: SanityGalleryImage[],
+  album: GalleryAlbumSlug,
+): SanityGalleryImage[] {
+  return deduplicateGalleryImages(images).filter(
+    (img) => resolveGalleryAlbum(img) === album,
+  );
+}
 
 export function deduplicateGalleryImages(
   images: SanityGalleryImage[],
@@ -104,4 +168,14 @@ export function filterUpcomingEvents(events: SanityEvent[]): SanityEvent[] {
     const ts = Date.parse(ev.date);
     return Number.isNaN(ts) || ts >= nowMs;
   });
+}
+
+export function filterPastEvents(events: SanityEvent[]): SanityEvent[] {
+  const nowMs = Date.now();
+  return events
+    .filter((ev) => {
+      const ts = Date.parse(ev.date);
+      return !Number.isNaN(ts) && ts < nowMs;
+    })
+    .sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
 }

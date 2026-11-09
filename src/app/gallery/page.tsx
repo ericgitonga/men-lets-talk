@@ -1,8 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import {
   FALLBACK_GALLERY_IMAGES,
+  GALLERY_ALBUMS,
   deduplicateGalleryImages,
+  getGalleryImagesByAlbum,
 } from "@/lib/defaultMedia";
 import { client } from "@/sanity/lib/client";
 import { readToken } from "@/sanity/env";
@@ -44,48 +47,63 @@ export default async function GalleryPage() {
         Moments from Men Let&apos;s Talk events, gatherings and community.
       </p>
 
-      {images.length === 0 ? (
-        <p data-testid="gallery-empty-state" className="mt-8 text-neutral-600">
-          No photos are shared here yet — check back soon.
-        </p>
-      ) : (
-        <div
-          data-testid="gallery-grid"
-          className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
-        >
-          {images.map((photo) => {
-            const thumbUrl = photo.image
-              ? urlForImage(photo.image).width(600).height(600).url()
-              : photo.imageUrl || null;
-            const fullUrl = photo.image
-              ? urlForImage(photo.image).width(1600).fit("max").url()
-              : photo.imageUrl || null;
-            return (
-              <figure
-                key={photo._id}
-                data-testid="gallery-item"
-                className="group relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
-              >
-                {thumbUrl && fullUrl && (
-                  <a
-                    href={fullUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block h-full w-full"
-                  >
-                    <Image
-                      src={thumbUrl}
-                      alt={photo.caption || "Photo from a Men Let's Talk event"}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </a>
+      <div
+        data-testid="gallery-albums"
+        className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2"
+      >
+        {GALLERY_ALBUMS.map((album) => {
+          const albumPhotos = getGalleryImagesByAlbum(images, album.slug);
+          const fallbackPhotos = getGalleryImagesByAlbum(
+            FALLBACK_GALLERY_IMAGES,
+            album.slug,
+          );
+          const photos =
+            albumPhotos.length > 0 ? albumPhotos : fallbackPhotos;
+          const coverPhoto = photos[0];
+          const coverUrl = coverPhoto?.image
+            ? urlForImage(coverPhoto.image).width(900).height(600).url()
+            : coverPhoto?.imageUrl || null;
+
+          return (
+            <Link
+              key={album.slug}
+              href={`/gallery/${album.slug}`}
+              data-testid="gallery-album-card"
+              className="group overflow-hidden rounded-xl border border-neutral-200 bg-white transition hover:border-neutral-400 hover:shadow-sm"
+            >
+              <div className="relative aspect-[3/2] overflow-hidden bg-neutral-100">
+                {coverUrl && (
+                  <Image
+                    src={coverUrl}
+                    alt={`${album.title} gallery cover`}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
                 )}
-              </figure>
-            );
-          })}
-        </div>
-      )}
+              </div>
+              <div className="p-6">
+                <div className="flex items-baseline justify-between gap-4">
+                  <h2 className="text-xl font-bold group-hover:underline">
+                    {album.title}
+                  </h2>
+                  <span
+                    data-testid="gallery-album-count"
+                    className="text-sm font-medium text-neutral-500"
+                  >
+                    {photos.length} {photos.length === 1 ? "photo" : "photos"}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-neutral-600">
+                  {album.description}
+                </p>
+                <p className="mt-4 text-sm font-semibold text-neutral-900">
+                  Open gallery →
+                </p>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </main>
   );
 }

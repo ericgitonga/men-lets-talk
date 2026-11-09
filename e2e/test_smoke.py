@@ -513,6 +513,10 @@ def test_events_page_loads():
         has_list = page.get_by_test_id("events-list").count() > 0
         has_empty = page.get_by_test_id("events-empty-state").count() > 0
         assert has_list or has_empty
+        past_section = page.get_by_test_id("past-events-section")
+        assert past_section.is_visible()
+        assert past_section.get_by_role("heading", name="Past Events", exact=True).is_visible()
+        assert page.get_by_test_id("past-event-item").count() >= 1
 
 
 def test_resources_page_loads():
@@ -567,8 +571,28 @@ def test_gallery_page_loads():
     with browser_page() as page:
         resp = page.goto("/gallery")
         assert resp.status == 200
+        albums = page.get_by_test_id("gallery-albums")
+        assert albums.is_visible()
+        cards = page.get_by_test_id("gallery-album-card")
+        assert cards.count() == 2
+        assert albums.get_by_role("heading", name="Men's Garage", exact=True).is_visible()
+        assert albums.get_by_role("heading", name="Community Gatherings", exact=True).is_visible()
+
+        # Drill down into Men's Garage album and verify breadcrumb + photo grid
+        albums.get_by_role("heading", name="Men's Garage", exact=True).click()
+        page.wait_for_url("**/gallery/mens-garage")
         assert page.get_by_test_id("gallery-grid").is_visible()
-        assert page.get_by_test_id("gallery-item").count() == 24
+        assert page.get_by_test_id("gallery-item").count() > 0
+        page.get_by_test_id("breadcrumb").get_by_role("link", name="Gallery", exact=True).click()
+        page.wait_for_url("**/gallery")
+
+        # Drill down into Community Gatherings album
+        page.get_by_test_id("gallery-albums").get_by_role(
+            "heading", name="Community Gatherings", exact=True
+        ).click()
+        page.wait_for_url("**/gallery/community-gatherings")
+        assert page.get_by_test_id("gallery-grid").is_visible()
+        assert page.get_by_test_id("gallery-item").count() > 0
 
 
 def test_desktop_nav_has_gallery_between_stories_and_get_involved():

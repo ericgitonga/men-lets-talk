@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 adheres to [Semantic Versioning](https://semver.org) (pre-1.0: MINOR = new features/user-facing
 behaviour, PATCH = fixes/docs/housekeeping — see `SKILL.md`).
 
+## [0.37.0] - 2026-11-09
+
+### Added
+
+- Organised `/gallery` into album folder cards (`data-testid="gallery-albums"`) with breadcrumb
+  drill-down navigation (`/gallery/[album]`):
+  - **Men's Garage** (`/gallery/mens-garage`): 64 event photographs (`mlt-mg_01.jpg` through
+    `mlt-mg_64.jpg`) uploaded to Sanity (`gallery-mens-garage-01` … `gallery-mens-garage-64`,
+    `album: "mens-garage"`) and bundled as static fallbacks under
+    `public/images/gallery/mens-garage/`.
+  - **Community Gatherings** (`/gallery/community-gatherings`): existing 24 conversation-circle and
+    community photographs (`gallery-01.jpg` … `gallery-29.jpg`, tagged
+    `album: "community-gatherings"`).
+- Added a **Past Events** section (`data-testid="past-events-section"`) on `/events` below
+  **Upcoming Events** (`PAST_EVENTS_QUERY` + `filterPastEvents()`), so past events remain visible
+  on site ordered most-recent first without an active registration form (closes #131).
+  tag: `v0.37.0`
+
 ## [0.36.2] - 2026-11-06
 
 ### Removed

@@ -16,6 +16,20 @@ export const EVENTS_QUERY = /* groq */ `
   }
 `;
 
+export const PAST_EVENTS_QUERY = /* groq */ `
+  *[_type == "event" && dateTime(date) < dateTime(now())] | order(date desc) {
+    _id,
+    name,
+    "slug": slug.current,
+    date,
+    location,
+    category,
+    description,
+    image,
+    registrationOpen
+  }
+`;
+
 export type SanityEvent = {
   _id: string;
   name: string;
@@ -278,6 +292,7 @@ export type SanitySiteSettings = {
 export const GALLERY_QUERY = /* groq */ `
   *[_type == "galleryImage"] | order(publishedAt desc) {
     _id,
+    album,
     image,
     caption
   }
@@ -285,6 +300,7 @@ export const GALLERY_QUERY = /* groq */ `
 
 export type SanityGalleryImage = {
   _id: string;
+  album?: string | null;
   image: { asset?: { _ref: string } } | null;
   imageUrl?: string | null;
   caption?: string | null;
